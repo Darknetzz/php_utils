@@ -1,4 +1,5 @@
-# PHP\UTILS
+# php-utils
+Disclaimer: This is so early in development it doesn't even have any useful stuff yet. Please come back later.
 
 
     # ────────────────────────────────────────────────────────── #
