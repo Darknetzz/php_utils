@@ -28,19 +28,8 @@ class Debugger {
      * @param  mixed $debug_array
      * @return void
      */
-    function __construct(bool $verbose)
+    function __construct(bool $verbose = false)
     {
-        setVerbosity($verbose);
-    }
-
-        
-    /**
-     * setVerbosity
-     *
-     * @param  mixed $verbose
-     * @return void
-     */
-    function setVerbosity(bool $verbose) {
         $this->verbose = $verbose;
     }
 

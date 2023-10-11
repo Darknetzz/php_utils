@@ -16,18 +16,18 @@ class Base {
     public $verbose = true;
 
 
-    public function printInfo() {
-        return "
-        $this->name -
-        $this->author - 
-        $this->version -
-        ";
-    }
+    // public function printInfo() {
+    //     return "
+    //     $this->name -
+    //     $this->author - 
+    //     $this->version -
+    //     ";
+    // }
 
     function __construct() {
 
         # Instantiate a debugger with construct
-        $this->debugger = new Debugger($verbose);
+        $this->debugger = new Debugger($this->verbose);
 
     }
 
