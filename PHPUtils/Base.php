@@ -23,7 +23,10 @@ class Base {
     }
 
     function __construct() {
+
+        # Instantiate a debugger with construct
         $this->debugger = new Debugger;
+        
     }
 
         
