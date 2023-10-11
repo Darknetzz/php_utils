@@ -58,7 +58,7 @@ class Debugger {
 
         $icon = (!empty($icon) ? $icon : null);
 
-        $txt = $icon.' '.$txt;
+        $input = $icon.' '.$input;
 
         return '
         <div class="alert alert-'.$type.'">'.$input.'</div>
@@ -81,9 +81,9 @@ class Debugger {
         $txt = __METHOD__.": ".$txt;
 
         if ($die) {
-            die(format($txt, $type));
+            die($this->format($txt, $type));
         }
-        echo format($txt, $type);
+        echo $this->format($txt, $type);
     }
 
 
