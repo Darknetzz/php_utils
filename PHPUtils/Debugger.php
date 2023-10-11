@@ -29,10 +29,9 @@ class Debugger {
      * @param  mixed $debug_array
      * @return void
      */
-    function __construct(bool $verbose, array $debug_array)
+    function __construct(bool $verbose = true)
     {
         $this->verbose = $verbose;
-        $this->debug_array = $debug_array;
     }
 
         

@@ -10,15 +10,20 @@ class Base {
     public $url    = "https://github.com/Darknetzz";
     public $version = "1.0.0";
 
+    public $debugger;
     public $debug_log = [];
 
 
     public function printInfo() {
-        return "$name - $author - $version";
+        return "
+        $this->name -
+        $this->author - 
+        $this->version -
+        ";
     }
 
-    public function __construct() {
-
+    function __construct() {
+        $this->debugger = new Debugger;
     }
 
         
@@ -36,11 +41,16 @@ class Base {
             $debug_log = [];
         }
 
-        $debugger = new Debugger();
-        $debugger->debug_log($debug_log, $txt);
+        # $debugger = new Debugger();
+        $this->debugger->debug_log($debug_log, $txt);
 
         return $debug_log;
 
+    }
+
+
+    public function warn(string $txt, string $type = 'info') {
+        $this->debugger->alert($txt, $type);
     }
 
 }
