@@ -47,7 +47,7 @@ class Strings extends Base {
         }
         
         if ($len < $visibility) {
-            
+            $this->debugger->alert("Parameter string is longer than visibility");
         }
     }
 }

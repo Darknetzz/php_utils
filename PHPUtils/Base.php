@@ -13,6 +13,8 @@ class Base {
     public $debugger;
     public $debug_log = [];
 
+    public $verbose = true;
+
 
     public function printInfo() {
         return "
@@ -25,35 +27,8 @@ class Base {
     function __construct() {
 
         # Instantiate a debugger with construct
-        $this->debugger = new Debugger;
-        
-    }
+        $this->debugger = new Debugger($verbose);
 
-        
-    /**
-     * debug
-     * Adds an entry to the $debug_log array
-     *
-     * @param  mixed $debug_log
-     * @param  mixed $txt
-     * @return void
-     */
-    public function debug($txt) {
-
-        if (!isset($debug_log)) {
-            $debug_log = [];
-        }
-
-        # $debugger = new Debugger();
-        $this->debugger->debug_log($debug_log, $txt);
-
-        return $debug_log;
-
-    }
-
-
-    public function warn(string $txt, string $type = 'info') {
-        $this->debugger->alert($txt, $type);
     }
 
 }

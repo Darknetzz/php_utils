@@ -18,8 +18,7 @@ $debugger->debug_print($debug_messages, "Debug log");
 
 class Debugger {
 
-    public bool $verbose = true;
-    public array $debug_array = [];
+    public bool $verbose;
 
         
     /**
@@ -29,9 +28,9 @@ class Debugger {
      * @param  mixed $debug_array
      * @return void
      */
-    function __construct(bool $verbose = true)
+    function __construct(bool $verbose)
     {
-        $this->verbose = $verbose;
+        setVerbosity($verbose);
     }
 
         
@@ -45,21 +44,57 @@ class Debugger {
         $this->verbose = $verbose;
     }
 
+
     /**
-     * error
+     * format
      *
      * @param  mixed $txt
+     * @param  mixed $type
+     * @param  mixed $icon
+     * @return void
+     */
+    function format(string $input, string $type = 'info') {
+        if ($type == 'info') {
+            $icon = 'ℹ️';
+        }
+        if ($type == 'danger') {
+            $icon = '❌';
+        }
+        if ($type == 'warning') {
+            $icon = '⚠️';
+        }
+        if ($type == 'success') {
+            $icon = '✅';
+        }
+
+        $icon = (!empty($icon) ? $icon : null);
+
+        $txt = $icon.' '.$txt;
+
+        return '
+        <div class="alert alert-'.$type.'">'.$input.'</div>
+        ';
+    }
+
+        
+  
+    /**
+     * output
+     * prints formatted output and echoes it
+     *
+     * @param  mixed $txt
+     * @param  mixed $type
      * @param  mixed $die
      * @return void
      */
-    public function error(string $txt, bool $die = true) {
+    public function output(string $txt, string $type = 'info', bool $die = false) {
 
-        echo __METHOD__.": $txt";
+        $txt = __METHOD__.": ".$txt;
 
         if ($die) {
-            die();
+            die(format($txt, $type));
         }
-
+        echo format($txt, $type);
     }
 
 
@@ -133,35 +168,6 @@ class Debugger {
         return $debugTable;
     }
 
-
-    /**
-     * alert
-     *
-     * @param  mixed $txt
-     * @param  mixed $type
-     * @param  mixed $icon
-     * @return void
-     */
-    function alert($txt, $type = 'info', $icon = '') {
-        if ($type == 'info') {
-            $icon = 'ℹ️';
-        }
-        if ($type == 'danger') {
-            $icon = '❌';
-        }
-        if ($type == 'warning') {
-            $icon = '⚠️';
-        }
-        if ($type == 'success') {
-            $icon = '✅';
-        }
-
-        $txt = $icon.' '.$txt;
-
-        return '
-        <div class="alert alert-'.$type.'">'.$txt.'</div>
-        ';
-    }
 }
 
 ?>
