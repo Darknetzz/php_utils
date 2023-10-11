@@ -11,9 +11,9 @@ class Files extends Base {
 
     public function include_folder(string $fullpath, array $except) {
         
-        if (!file_exists($fullpath)) {
-            $this->error("Unable to include path $fullpath");
-        }
+        // if (!file_exists($fullpath)) {
+        //     $this->error("Unable to include path $fullpath");
+        // }
 
     }
 }

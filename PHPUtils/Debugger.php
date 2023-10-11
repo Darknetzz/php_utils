@@ -19,7 +19,7 @@ $debugger->debug_print($debug_messages, "Debug log");
 class Debugger {
 
     public bool $verbose;
-
+    private $vars;
         
     /**
      * __construct
@@ -31,6 +31,9 @@ class Debugger {
     function __construct(bool $verbose = false)
     {
         $this->verbose = $verbose;
+
+        # Instantiate Vars class
+        $this->vars     = new Vars();
     }
 
 
@@ -42,7 +45,12 @@ class Debugger {
      * @param  mixed $icon
      * @return void
      */
-    function format(string $input, string $type = 'info') {
+    function format(mixed $input, string $type = 'info') {
+
+        if (empty($input)) {
+            $input = '[empty]';
+        }
+
         if ($type == 'info') {
             $icon = 'ℹ️';
         }
@@ -58,10 +66,28 @@ class Debugger {
 
         $icon = (!empty($icon) ? $icon : null);
 
-        $input = $icon.' '.$input;
+        # Defaults (for string)
+        $header = $icon." ".$type;
+        $body   = $input;
+
+        if (is_array($input)) {
+            if (count($input) == 2) {
+                $header = $icon." ".$this->vars->stringify($input[0]);
+                $header = $icon." ".json_encode($input[0]);
+                $body   = json_encode($input[1]);
+            }
+            elseif (count($input) > 2) {
+                $header = $icon." ".$type;
+                $body   = json_encode($input, JSON_PRETTY_PRINT);
+            }
+        }
 
         return '
-        <div class="alert alert-'.$type.'">'.$input.'</div>
+        <div class="alert alert-'.$type.'">
+        <h4>'.$header.'</h4>
+        <hr>
+        '.$body.'
+        </div>
         ';
     }
 
@@ -76,10 +102,7 @@ class Debugger {
      * @param  mixed $die
      * @return void
      */
-    public function output(string $txt, string $type = 'info', bool $die = false) {
-
-        $txt = __METHOD__.": ".$txt;
-
+    public function output(mixed $txt, string $type = 'info', bool $die = false) {
         if ($die) {
             die($this->format($txt, $type));
         }

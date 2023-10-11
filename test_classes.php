@@ -17,14 +17,9 @@ echo $strings->hide($str);
 
 $debugger = new Debugger;
 
-$debugger->output("Hi");
+$constants = get_defined_constants(true);
+
+$debugger->output($constants);
 
 echo "<hr>";
-
-$debugger->output();
-
-print_r(get_defined_constants(true))['user'];
-
-
-print_r(get_defined_constants(true))['user'];
 ?>

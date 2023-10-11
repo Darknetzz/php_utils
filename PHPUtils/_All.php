@@ -22,6 +22,7 @@ $classFolder = dirname(__FILE__);
 #                                         ESSENTIAL CLASSES                                        #
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
 $essentialClasses = [
+    "Vars",
     "Debugger",
     "Base",
     "Files",

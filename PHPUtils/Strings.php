@@ -43,11 +43,11 @@ class Strings extends Base {
         $len = strlen($string);
         
         if ($len < 3 || $len - $visibility < 0) {
-            $this->debugger->alert("Unable to hide string.");
+            $this->debugger->output("Unable to hide string.");
         }
         
         if ($len < $visibility) {
-            $this->debugger->alert("Parameter string is longer than visibility");
+            $this->debugger->output("Parameter string is longer than visibility");
         }
     }
 }

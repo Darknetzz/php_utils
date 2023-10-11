@@ -13,6 +13,8 @@ class Base {
     public $debugger;
     public $debug_log = [];
 
+    public $vars;
+
     public $verbose = true;
 
 
@@ -28,6 +30,10 @@ class Base {
 
         # Instantiate a debugger with construct
         $this->debugger = new Debugger($this->verbose);
+        
+
+        # Instantiate Vars class
+        $this->vars     = new Vars();
 
     }
 
