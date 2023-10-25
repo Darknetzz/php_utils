@@ -50,6 +50,20 @@ class Strings extends Base {
             $this->debugger->output("Parameter string is longer than visibility");
         }
     }
+    
+    /**
+     * cap
+     *
+     * @param  mixed $string
+     * @param  mixed $maxlen
+     * @return void
+     */
+    function cap(string $string, int $maxlen = 30) {
+        if (strlen($string) > $maxlen) {
+            return substr($string, 0, 30)."...";
+        }
+        return $string;
+    }
 }
 
 ?>

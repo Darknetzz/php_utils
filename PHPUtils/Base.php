@@ -18,22 +18,22 @@ class Base {
     public $verbose = true;
 
 
-    // public function printInfo() {
-    //     return "
-    //     $this->name -
-    //     $this->author - 
-    //     $this->version -
-    //     ";
-    // }
-
     function __construct() {
 
+        if (empty($this->debugger)) {
+            $this->debugger = new Debugger($this->verbose);
+        }
+        # REVIEW: does the Base class infinitely
+        # reinstantiate itself every time a "new" is called?
+        # only when the instantiated class extends base, right?
         # Instantiate a debugger with construct
-        $this->debugger = new Debugger($this->verbose);
         
+        # NOTE: I don't think the base class should have a construct method at all
 
         # Instantiate Vars class
-        $this->vars     = new Vars();
+        if (empty($this->vars)) {
+            $this->vars     = new Vars();
+        }
 
     }
 

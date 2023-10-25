@@ -26,7 +26,7 @@ class SQL extends Base {
     
         # allow for the statement to contain constants directly (probably not such a good idea)
         # https://stackoverflow.com/questions/1563654/quoting-constants-in-php-this-is-a-my-constant
-        $statement = str_replace(array_keys(get_defined_constants(true)['user']), get_defined_constants(true)['user'], $statement);
+        // $statement = str_replace(array_keys(get_defined_constants(true)['user']), get_defined_constants(true)['user'], $statement);
     
         $query = $sqlcon->prepare($statement);
     
@@ -50,9 +50,10 @@ class SQL extends Base {
             die("<div class='alert alert-danger'>Fatal error: $sqlcon->error</div>");
         }
     
-        if ($result->num_rows < 1) {
-            return $result; # we still want to return the object (even if it's empty)
-        }
+        // if ($result->num_rows < 1) {
+        //     return $result; # we still want to return the object (even if it's empty)
+        //     # ok? so why do an if check then??
+        // }
     
         return $result;
     }
