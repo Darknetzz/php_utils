@@ -34,26 +34,36 @@ class Times {
         }
 
         // $formattedTimeLeft = $diff->format($format);
-
+        foreach ($formats as $unit => $f) {
+            $amt = $diff->format($f);
+            if ($amt > 1) {
+                return "$amt $unit";
+            }
+            if ($amt == 1) {
+                return "$amt ".substr($unit, 0, -1);
+            }
+        }
         # Automatically format the time left
-            
-        # Days
-        $days = $diff->format($formats['days']);
-        if ($days > 0) {
-            return $days.' days';
-        }
+        // # Days
+        // $days = $diff->format($formats['days']);
+        // if ($days > 0) {
+        //     if ($days > 1) {
+        //         $s = 's';
+        //     }
+        //     return $days.' day'.$s;
+        // }
 
-        # Hours
-        $hours = $diff->format($formats['hours']);
-        if ($hours > 0) {
-            return $hours.' hours';
-        }
+        // # Hours
+        // $hours = $diff->format($formats['hours']);
+        // if ($hours > 0) {
+        //     return $hours.' hours';
+        // }
 
-        # Minutes
-        $minutes = $diff->format($formats['minutes']);
-        if ($minutes > 0) {
-            return $minutes.' minutes';
-        }
+        // # Minutes
+        // $minutes = $diff->format($formats['minutes']);
+        // if ($minutes > 0) {
+        //     return $minutes.' minutes';
+        // }
 
         return 'now';
     }
