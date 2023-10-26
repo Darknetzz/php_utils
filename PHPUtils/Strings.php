@@ -43,12 +43,26 @@ class Strings extends Base {
         $len = strlen($string);
         
         if ($len < 3 || $len - $visibility < 0) {
-            $this->debugger->alert("Unable to hide string.");
+            $this->debugger->output("Unable to hide string.");
         }
         
         if ($len < $visibility) {
-            
+            $this->debugger->output("Parameter string is longer than visibility");
         }
+    }
+    
+    /**
+     * cap
+     *
+     * @param  mixed $string
+     * @param  mixed $maxlen
+     * @return void
+     */
+    function cap(string $string, int $maxlen = 30) {
+        if (strlen($string) > $maxlen) {
+            return substr($string, 0, 30)."...";
+        }
+        return $string;
     }
 }
 

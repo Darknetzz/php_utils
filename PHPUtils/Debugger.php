@@ -18,9 +18,8 @@ $debugger->debug_print($debug_messages, "Debug log");
 
 class Debugger {
 
-    public bool $verbose = true;
-    public array $debug_array = [];
-
+    public bool $verbose;
+    private $vars;
         
     /**
      * __construct
@@ -29,37 +28,85 @@ class Debugger {
      * @param  mixed $debug_array
      * @return void
      */
-    function __construct(bool $verbose = true)
+    function __construct(bool $verbose = false)
     {
         $this->verbose = $verbose;
+
+        # Instantiate Vars class
+        $this->vars     = new Vars();
+    }
+
+
+    /**
+     * format
+     *
+     * @param  mixed $txt
+     * @param  mixed $type
+     * @param  mixed $icon
+     * @return void
+     */
+    function format(mixed $input, string $type = 'info') {
+
+        if (empty($input)) {
+            $input = '[empty]';
+        }
+
+        if ($type == 'info') {
+            $icon = 'ℹ️';
+        }
+        if ($type == 'danger') {
+            $icon = '❌';
+        }
+        if ($type == 'warning') {
+            $icon = '⚠️';
+        }
+        if ($type == 'success') {
+            $icon = '✅';
+        }
+
+        $icon = (!empty($icon) ? $icon : null);
+
+        # Defaults (for string)
+        $header = $icon." ".$type;
+        $body   = $input;
+
+        if (is_array($input)) {
+            if (count($input) == 2) {
+                $header = $icon." ".$this->vars->stringify($input[0]);
+                $header = $icon." ".json_encode($input[0]);
+                $body   = json_encode($input[1]);
+            }
+            elseif (count($input) > 2) {
+                $header = $icon." ".$type;
+                $body   = json_encode($input, JSON_PRETTY_PRINT);
+            }
+        }
+
+        return '
+        <div class="alert alert-'.$type.'">
+        <h4>'.$header.'</h4>
+        <hr>
+        '.$body.'
+        </div>
+        ';
     }
 
         
+  
     /**
-     * setVerbosity
-     *
-     * @param  mixed $verbose
-     * @return void
-     */
-    function setVerbosity(bool $verbose) {
-        $this->verbose = $verbose;
-    }
-
-    /**
-     * error
+     * output
+     * prints formatted output and echoes it
      *
      * @param  mixed $txt
+     * @param  mixed $type
      * @param  mixed $die
      * @return void
      */
-    public function error(string $txt, bool $die = true) {
-
-        echo __METHOD__.": $txt";
-
+    public function output(mixed $txt, string $type = 'info', bool $die = false) {
         if ($die) {
-            die();
+            die($this->format($txt, $type));
         }
-
+        echo $this->format($txt, $type);
     }
 
 
@@ -133,35 +180,6 @@ class Debugger {
         return $debugTable;
     }
 
-
-    /**
-     * alert
-     *
-     * @param  mixed $txt
-     * @param  mixed $type
-     * @param  mixed $icon
-     * @return void
-     */
-    function alert($txt, $type = 'info', $icon = '') {
-        if ($type == 'info') {
-            $icon = 'ℹ️';
-        }
-        if ($type == 'danger') {
-            $icon = '❌';
-        }
-        if ($type == 'warning') {
-            $icon = '⚠️';
-        }
-        if ($type == 'success') {
-            $icon = '✅';
-        }
-
-        $txt = $icon.' '.$txt;
-
-        return '
-        <div class="alert alert-'.$type.'">'.$txt.'</div>
-        ';
-    }
 }
 
 ?>

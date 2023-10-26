@@ -35,6 +35,25 @@ class Vars {
             }
         }
         return false;
-    }}
+    }
+
+
+    public function stringify(mixed $var) {
+
+        $return = $var;
+
+        if (is_array($var)) {
+
+            $return = json_encode($return, JSON_PRETTY_PRINT);
+
+        }
+
+        return $var;
+    }
+
+}
+
+
+
 
 ?>
