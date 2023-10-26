@@ -17,32 +17,103 @@ class Files extends Base {
 
     }
 
-    public function file_read(string $fullpath) {
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                             IS_FILE                                             #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function is_file(string $fullpath) {
         if (file_exists($fullpath) && is_file($fullpath)) {
-            $f = fopen($fullpath, 'r');
-            return $f->file_read();
+            return true;
         }
+
+        return false;
     }
 
-    public function file_write(string $fullpath, string $content, bool $create = true) {    
-        if (!file_exists($fullpath) && $create === true) {
-            touch($fullpath);
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                           FILE_CLOSE                                            #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function file_close(mixed $handle, int $attempts = 3) {
+
+        if (!is_resource($handle)) {
+            return false;
         }
+
+        $try = 0;
+        while (is_resource($handle) && $try <= $attempts) {
+            $handle->close();
+            $try++;
+        }
+
+        if (!is_resource($handle)) {
+            return true;
+        }
+        
+        $this->debugger->throw_exception(__METHOD__.": Unable to close file handle on line ".__LINE__);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                            FILE_READ                                            #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function file_read(string $fullpath) {
+        if (!file_exists($fullpath) || !is_file($fullpath)) {
+            $this->debugger->throw_exception(__METHOD__.": Attempted to read a file that does not exist: $fullpath");
+        }
+
+        $f = fopen($fullpath, 'r');
+        $read = $f->file_read();
+        $this->file_close($f);
+
+        return $read;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                        FILE_WRITE_ACCESS                                        #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function file_write_access(string $fullpath) {
+        $f = fopen(SQLFILE, 'w+');
+
+        if (!$f) {
+            return false;
+        }
+
+        $this->file_close($f);
+        return true;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                           FILE_WRITE                                            #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function file_write(string $fullpath, string $content, bool $create = true) {    
+        if (!file_exists($fullpath) && $create === false) {
+            return false;
+        }
+
+        if (!$this->file_write_access($fullpath)) {
+            return false;
+        }
+
+        touch($fullpath);
         
         $f = fopen($fullpath, 'w+');
         $f->file_write($content);
         $f->close();
+        return $content;
     }
 
-    # A "file_close" function should not be neccessary as both
-    # file_read and file_write properly closes the file, but just in case
-    public function file_close(mixed $handle) {
-        if (!is_resource($handle)) {
-            return false;
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                           FILE_DELETE                                           #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function file_delete(string $fullpath) {
+        if (!file_exists($fullpath) || !is_file($fullpath)) {
+            return true;
         }
-        $handle->close();
-        return true;
+
+        if (unlink($fullpath)) {
+            return true;
+        }
+
+        return false;
     }
+
 }
 
 ?>
