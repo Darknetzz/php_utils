@@ -39,7 +39,7 @@ class Files extends Base {
 
         $try = 0;
         while (is_resource($handle) && $try <= $attempts) {
-            $handle->close();
+            fclose($handle);
             $try++;
         }
 
@@ -59,7 +59,7 @@ class Files extends Base {
         }
 
         $f = fopen($fullpath, 'r');
-        $read = $f->file_read();
+        $read = fread($f);
         $this->file_close($f);
 
         return $read;
@@ -94,8 +94,7 @@ class Files extends Base {
         touch($fullpath);
         
         $f = fopen($fullpath, 'w+');
-        $f->file_write($content);
-        // $f->close();
+        fwrite($f, $content);
         $this->file_close($f);
         return $content;
     }
