@@ -95,7 +95,8 @@ class Files extends Base {
         
         $f = fopen($fullpath, 'w+');
         $f->file_write($content);
-        $f->close();
+        // $f->close();
+        $this->file_close($f);
         return $content;
     }
 
@@ -114,6 +115,18 @@ class Files extends Base {
         return false;
     }
 
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    //                                          FILE_IS_EMPTY                                          #
+    // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    public function file_is_empty(string $fullpath) {
+        $contents = $this->file_read($fullpath);
+
+        if (!empty($contents)) {
+            return false;
+        }
+
+        return true;
+    }
 }
 
 ?>
