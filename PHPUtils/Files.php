@@ -69,7 +69,7 @@ class Files extends Base {
     //                                        FILE_WRITE_ACCESS                                        #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     public function file_write_access(string $fullpath) {
-        $f = fopen(SQLFILE, 'w+');
+        $f = fopen($fullpath, 'w+');
 
         if (!$f) {
             return false;
