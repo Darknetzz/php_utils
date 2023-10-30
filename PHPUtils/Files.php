@@ -58,6 +58,10 @@ class Files extends Base {
             $this->debugger->throw_exception(__METHOD__.": Attempted to read a file that does not exist: $fullpath");
         }
 
+        if (!filesize($fullpath)) {
+            return null;
+        }
+
         $f = fopen($fullpath, 'r');
         $read = fread($f, filesize($fullpath));
         $this->file_close($f);
