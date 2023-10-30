@@ -36,10 +36,10 @@ class SQL extends Base {
             $types = '';
             foreach ($params as $n => $val) { # &$val ?
                 $types .= 's';
-                $query->bind_param($types, $val);
                 # Hey, I know this looks kinda weird, BUT: 
                 # https://stackoverflow.com/questions/36777813/using-bind-param-with-arrays-and-loops
             }
+            $query->bind_param($types, ...$params);
             $paramscs = implode(", ", $params);
         }
     
