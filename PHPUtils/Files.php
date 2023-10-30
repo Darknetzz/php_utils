@@ -59,7 +59,7 @@ class Files extends Base {
         }
 
         $f = fopen($fullpath, 'r');
-        $read = fread($f);
+        $read = fread($f, filesize($fullpath));
         $this->file_close($f);
 
         return $read;
