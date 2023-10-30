@@ -58,7 +58,7 @@ class Files extends Base {
             $this->debugger->throw_exception(__METHOD__.": Attempted to read a file that does not exist: $fullpath");
         }
 
-        if (!filesize($fullpath)) {
+        if (!filesize($fullpath) || filesize($fullpath) < 1) {
             return null;
         }
 
