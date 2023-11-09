@@ -17,6 +17,7 @@ class Network extends Base {
 
       
       function ipInRange(string $ip, string $lowerip, string $upperip) {
+        $ip         = ip2long($ip);
         $lower_long = ip2long($lowerip);
         $upper_long = ip2long($upperip);
 
