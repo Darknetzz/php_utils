@@ -31,6 +31,7 @@ class Network extends Base {
     /* ───────────────────────────────────────────────────────────────────── */
     /*                               getUserIP                               */
     /* ───────────────────────────────────────────────────────────────────── */
+    # NOTE: Please do not assume this function is safe for determining user IP.
     function getUserIP(
       string $reverse_proxy = null,
       bool $return_array = false,
@@ -59,11 +60,15 @@ class Network extends Base {
     /* ───────────────────────────────────────────────────────────────────── */
     /*                            usesReverseProxy                           */
     /* ───────────────────────────────────────────────────────────────────── */
+    # NOTE: Please do not assume this function is safe for determining user proxy.
     function usesReverseProxy(?string $proxy = null) {
-      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+      $ra     = (!empty($_SERVER['REMOTE_ADDR'])          ? $_SERVER['REMOTE_ADDR']          : null);
+      $ff     = (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null);
+
+      if (!empty($ff)) {
         return true;
       }
-      if ($_SERVER['REMOTE_ADDR'] == $proxy) {
+      if ($ra == $proxy) {
         return true;
       }
       return false;
