@@ -51,16 +51,35 @@ class Vars {
         return $return;
     }
 
+
+    # TODO: This function returns false regardless...
     public function in_md_array(array $haystack, string $needle) {
-        $holdsValue = False;
-        $callBack = function($item, $key, $needle) {
-            global $holdsValue;
-            if ($item == $needle || $key == $needle) {
-                $holdsValue = True;
+
+        $contains = False;
+
+        # Callback function
+        $callBack = function($val, $key, $needle) use(&$contains) {
+
+            # We have already found what we are looking for
+            if ($contains === True) {
+                return $contains;
             }
+
+            # Found it!
+            elseif ($key == $needle || $val == $needle) {
+                $contains = True;
+            }
+
+            return $contains;
         };
+
         array_walk_recursive($haystack, $callBack, $needle);
-        return $holdsValue;
+
+        if ($contains !== False) {
+            echo "Fant!";
+            return true;
+        }
+        return false;
     }
 
 }
