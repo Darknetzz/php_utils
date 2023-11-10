@@ -37,7 +37,7 @@ class Network extends Base {
       }
 
       if ($return_array) {
-        return [$type => $userip];
+        return ["type" => $type, "userip" => $userip];
       }
       return $userip;
     }
