@@ -28,9 +28,9 @@ class Vars {
 
 
     
-    public function arrayInString($array, $string) {
-        foreach ($array as $char) {
-            if (strpos($char, $string) !== FALSE) {
+    public function arrayInString(array $haystack, string $needle) {
+        foreach ($haystack as $char) {
+            if (strpos($char, $needle) !== FALSE) {
                 return true;
             }
         }
@@ -48,7 +48,19 @@ class Vars {
 
         }
 
-        return $var;
+        return $return;
+    }
+
+    public function in_md_array(array $haystack, string $needle) {
+        $holdsValue = False;
+        function callBack($item, $key, $needle) {
+            global $holdsValue;
+            if ($item == $needle || $key == $needle) {
+                $holdsValue = True;
+            }
+        }
+        array_walk_recursive($haystack, 'callBack', $needle);
+        return $holdsValue;
     }
 
 }

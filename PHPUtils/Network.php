@@ -27,26 +27,43 @@ class Network extends Base {
       return false;
     }
 
-    function getUserIP(bool $return_array = false) {
-      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $type   = "Forwarded for";
-        $userip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-      } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
-        $type   = "Remote address";
-        $userip = $_SERVER['REMOTE_ADDR'];
+ 
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                               getUserIP                               */
+    /* ───────────────────────────────────────────────────────────────────── */
+    function getUserIP(
+      string $reverse_proxy = null,
+      bool $return_array = false,
+      bool $die_if_empty = false) {
+      
+        $ra     = (!empty($_SERVER['REMOTE_ADDR'])          ? $_SERVER['REMOTE_ADDR']          : null);
+        $ff     = (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null);
+        $type   = (!empty($ff)                              ? "proxy"                          : "direct");
+        $userip = (!empty($ff)                              ? $ff                              : $ra);
+
+      if (empty($userip) && $die_if_empty !== false) {
+        die("getUserIP: Unable to get IP from user.");
       }
 
-      if ($return_array) {
+      if (!empty($reverse_proxy) && $ra == $reverse_proxy) {
+        $type   = "proxy";
+      }
+
+      if ($return_array !== false) {
         return ["type" => $type, "userip" => $userip];
       }
       return $userip;
     }
 
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                            usesReverseProxy                           */
+    /* ───────────────────────────────────────────────────────────────────── */
     function usesReverseProxy(?string $proxy = null) {
       if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         return true;
       }
-      if (!empty($proxy && $_SERVER['REMOTE_ADDR']) == $proxy) {
+      if ($_SERVER['REMOTE_ADDR'] == $proxy) {
         return true;
       }
       return false;
