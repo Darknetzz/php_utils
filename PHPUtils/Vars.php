@@ -53,13 +53,13 @@ class Vars {
 
     public function in_md_array(array $haystack, string $needle) {
         $holdsValue = False;
-        function callBack($item, $key, $needle) {
+        $callBack = function($item, $key, $needle) {
             global $holdsValue;
             if ($item == $needle || $key == $needle) {
                 $holdsValue = True;
             }
-        }
-        array_walk_recursive($haystack, 'callBack', $needle);
+        };
+        array_walk_recursive($haystack, $callBack, $needle);
         return $holdsValue;
     }
 
