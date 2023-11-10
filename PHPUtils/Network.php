@@ -16,16 +16,41 @@ class Network extends Base {
       }
 
       
-      function ipInRange(string $ip, string $lowerip, string $upperip) {
-        $ip         = ip2long($ip);
-        $lower_long = ip2long($lowerip);
-        $upper_long = ip2long($upperip);
+    function ipInRange(string $ip, string $lowerip, string $upperip) {
+      $ip         = ip2long($ip);
+      $lower_long = ip2long($lowerip);
+      $upper_long = ip2long($upperip);
 
-        if ($lower_long <= $ip && $ip >= $upper_long) {
-            return true;
-        }
-        return false;
+      if ($lower_long <= $ip && $ip >= $upper_long) {
+          return true;
       }
+      return false;
+    }
+
+    function getUserIP(bool $return_array = false) {
+      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $type   = "Forwarded for";
+        $userip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+        $type   = "Remote address";
+        $userip = $_SERVER['REMOTE_ADDR'];
+      }
+
+      if ($return_array) {
+        return [$type => $userip];
+      }
+      return $userip;
+    }
+
+    function usesReverseProxy(?string $proxy = null) {
+      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return true;
+      }
+      if (!empty($proxy && $_SERVER['REMOTE_ADDR']) == $proxy) {
+        return true;
+      }
+      return false;
+    }
 
 }
 ?>
