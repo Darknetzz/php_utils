@@ -9,6 +9,9 @@
 
 class Vars {
     
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                               var_assert                              */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function var_assert(mixed &$var, mixed $assertVal = false, bool $lazy = false) : bool {
         if (!isset($var)) {
             return false;
@@ -27,7 +30,9 @@ class Vars {
     }
 
 
-    
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                             arrayInString                             */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function arrayInString(array $haystack, string $needle) {
         foreach ($haystack as $char) {
             if (strpos($char, $needle) !== FALSE) {
@@ -38,6 +43,9 @@ class Vars {
     }
 
 
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                               stringify                               */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function stringify(mixed $var) {
 
         $return = $var;
@@ -52,7 +60,10 @@ class Vars {
     }
 
 
-    # TODO: This function returns false regardless...
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                              in_md_array                              */
+    /* ───────────────────────────────────────────────────────────────────── */
+    # NOTE: This function might be reesource expensive, but at least it works now.
     public function in_md_array(array $haystack, string $needle) {
 
         $contains = False;
@@ -66,7 +77,7 @@ class Vars {
             }
 
             # Found it!
-            elseif ($key == $needle || $val == $needle) {
+            if ($key == $needle || $val == $needle) {
                 $contains = True;
             }
 
@@ -76,10 +87,9 @@ class Vars {
         array_walk_recursive($haystack, $callBack, $needle);
 
         if ($contains !== False) {
-            echo "Fant!";
-            return true;
+            return True;
         }
-        return false;
+        return False;
     }
 
 }
