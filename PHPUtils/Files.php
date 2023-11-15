@@ -130,6 +130,43 @@ class Files extends Base {
 
         return true;
     }
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                            currentFileName                            */
+    /* ───────────────────────────────────────────────────────────────────── */
+    public function currentFileName(bool $ext = True) {
+        if ($ext != True) {
+            return basename(__FILE__, '.php');
+        }
+        return basename(__FILE__);
+    }
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                             preventDirect                             */
+    /* ───────────────────────────────────────────────────────────────────── */
+    # Prevents direct invokation of a script - except $exceptions
+    public function preventDirect(array $exceptions = [], ?callable $callback = null) {
+
+        # default callback function
+        if ($callback == null) {
+            $callback = function() {
+                http_response_code(404);
+                die("Not allowed.");
+            };
+        }
+
+        # The file requested in the URI
+        $sf              = basename($_SERVER['SCRIPT_FILENAME']);
+
+        # The actual script running
+        $currentFileName = $this->currentFileName();
+
+        # FIXME: $currentFileName resolves to Files.php
+        if (!in_array($currentFileName, $exceptions) && $currentFileName != $sf) {
+            echo $currentFileName." != ".$sf;
+            $callback();
+        }
+    }
 }
 
 ?>
