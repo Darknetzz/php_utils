@@ -135,35 +135,49 @@ class Files extends Base {
     /*                            currentFileName                            */
     /* ───────────────────────────────────────────────────────────────────── */
     public function currentFileName(bool $ext = True) {
+        # The whole point of this function is to not have to pass or know the current file name
+        # __SCRIPT__           = resolves to Files.php
+        # $_SERVER['PHP_SELF'] = resolves to the PHP file requested in the URI
+        $caller = $_SERVER['PHP_SELF'];
+
         if ($ext != True) {
-            return basename(__FILE__, '.php');
+            return basename($caller, '.php');
         }
-        return basename(__FILE__);
+        return basename($caller);
     }
 
     /* ───────────────────────────────────────────────────────────────────── */
     /*                             preventDirect                             */
     /* ───────────────────────────────────────────────────────────────────── */
     # Prevents direct invokation of a script - except $exceptions
-    public function preventDirect(array $exceptions = [], ?callable $callback = null) {
+    public function preventDirect(array $exceptions = [], mixed &$pagevar = null, ?callable $callback = null) {
 
         # default callback function
         if ($callback == null) {
             $callback = function() {
                 http_response_code(404);
-                die("Not allowed.");
+                die("404 Not found");
             };
         }
 
+        # current page is stored in a variable passed to this method
+        if (!empty($pagevar)) {
+            if (!in_array($pagevar, $exceptions)) {
+                $callback();
+            }
+        }
+
+        if (!in_array()) {
+
+        }
+
         # The file requested in the URI
-        $sf              = basename($_SERVER['SCRIPT_FILENAME']);
+        $sf              = basename($_SERVER['PHP_SELF']);
 
         # The actual script running
-        $currentFileName = $this->currentFileName();
+        $currentFileName = basename($this->currentFileName());
 
-        # FIXME: $currentFileName resolves to Files.php
         if (!in_array($currentFileName, $exceptions) && $currentFileName != $sf) {
-            echo $currentFileName." != ".$sf;
             $callback();
         }
     }
