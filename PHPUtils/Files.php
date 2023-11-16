@@ -160,19 +160,21 @@ class Files extends Base {
             };
         }
 
-        # current page is stored in a variable passed to this method
-        if (!empty($pagevar)) {
-            if (!in_array($pagevar, $exceptions)) {
-                $callback();
-            }
-        }
-
-        if (!in_array()) {
-
-        }
+        $custom = (!empty($pagevar) ? True : False);
 
         # The file requested in the URI
-        $sf              = basename($_SERVER['PHP_SELF']);
+        $page = ($custom ? $pagevar : basename($_SERVER['PHP_SELF']));
+
+        # current page is stored in a variable passed to this method
+        if ($custom && $pagevar != $page && !in_array($pagevar, $exceptions)) {
+            $callback();
+        }
+
+        if (!$custom && $page && !in_array($page)) {
+
+        }
+
+
 
         # The actual script running
         $currentFileName = basename($this->currentFileName());
