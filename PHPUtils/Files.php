@@ -149,6 +149,7 @@ class Files extends Base {
     /* ───────────────────────────────────────────────────────────────────── */
     /*                             preventDirect                             */
     /* ───────────────────────────────────────────────────────────────────── */
+    # TODO: Fix this function at some point
     # Prevents direct invokation of a script - except $exceptions
     public function preventDirect(array $exceptions = [], mixed &$pagevar = null, ?callable $callback = null) {
 
@@ -170,16 +171,16 @@ class Files extends Base {
             $callback();
         }
 
-        if (!$custom && $page && !in_array($page)) {
+        // if (!$custom && $page && !in_array($page, $exceptions)) {
 
-        }
+        // }
 
 
 
         # The actual script running
         $currentFileName = basename($this->currentFileName());
 
-        if (!in_array($currentFileName, $exceptions) && $currentFileName != $sf) {
+        if (!in_array($currentFileName, $exceptions) && $currentFileName != $page) {
             $callback();
         }
     }
