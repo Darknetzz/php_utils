@@ -4,6 +4,13 @@
 /*                                  Crypto                                    */
 /* ────────────────────────────────────────────────────────────────────────── */
 class Crypto extends Base {
+
+    function genIV(string $method) {
+        $len   = openssl_cipher_iv_length($method);
+        $bytes = openssl_random_pseudo_bytes($len);
+        return bin2hex($bytes);
+    }
+
     /**
      * encryptwithpw
      *
@@ -11,11 +18,12 @@ class Crypto extends Base {
      * @param  mixed $password
      * @return void
      */
-    function encryptwithpw($str, $password) {
-        return openssl_encrypt($str,"AES-128-ECB",$password);
+     function encryptwithpw(string $str, string $password, string $method = 'aes-256-cbc', bool $iv = false) {
+        $iv = ($iv ? $this->genIV($method) : '');
+        return openssl_encrypt($str,$method,$password,iv:$iv);
     }
 
-        
+
     /**
      * decryptwithpw
      *
@@ -23,8 +31,8 @@ class Crypto extends Base {
      * @param  mixed $password
      * @return void
      */
-    function decryptwithpw($str, $password) {
-        return openssl_decrypt($str,"AES-128-ECB",$password);
+    function decryptwithpw(string $str, string $password, string $method = 'aes-256-cbc', string $iv = '') {
+        return openssl_decrypt($str,$method,$password,iv:$iv);
     }
 
     /**

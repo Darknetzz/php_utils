@@ -130,6 +130,59 @@ class Files extends Base {
 
         return true;
     }
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                            currentFileName                            */
+    /* ───────────────────────────────────────────────────────────────────── */
+    public function currentFileName(bool $ext = True) {
+        # The whole point of this function is to not have to pass or know the current file name
+        # __SCRIPT__           = resolves to Files.php
+        # $_SERVER['PHP_SELF'] = resolves to the PHP file requested in the URI
+        $caller = $_SERVER['PHP_SELF'];
+
+        if ($ext != True) {
+            return basename($caller, '.php');
+        }
+        return basename($caller);
+    }
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                             preventDirect                             */
+    /* ───────────────────────────────────────────────────────────────────── */
+    # Prevents direct invokation of a script - except $exceptions
+    public function preventDirect(array $exceptions = [], mixed &$pagevar = null, ?callable $callback = null) {
+
+        # default callback function
+        if ($callback == null) {
+            $callback = function() {
+                http_response_code(404);
+                die("404 Not found");
+            };
+        }
+
+        $custom = (!empty($pagevar) ? True : False);
+
+        # The file requested in the URI
+        $page = ($custom ? $pagevar : basename($_SERVER['PHP_SELF']));
+
+        # current page is stored in a variable passed to this method
+        if ($custom && $pagevar != $page && !in_array($pagevar, $exceptions)) {
+            $callback();
+        }
+
+        if (!$custom && $page && !in_array($page)) {
+
+        }
+
+
+
+        # The actual script running
+        $currentFileName = basename($this->currentFileName());
+
+        if (!in_array($currentFileName, $exceptions) && $currentFileName != $sf) {
+            $callback();
+        }
+    }
 }
 
 ?>

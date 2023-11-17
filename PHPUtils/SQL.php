@@ -36,10 +36,10 @@ class SQL extends Base {
             $types = '';
             foreach ($params as $n => $val) { # &$val ?
                 $types .= 's';
-                $query->bind_param($types, $val);
                 # Hey, I know this looks kinda weird, BUT: 
                 # https://stackoverflow.com/questions/36777813/using-bind-param-with-arrays-and-loops
             }
+            $query->bind_param($types, ...$params);
             $paramscs = implode(", ", $params);
         }
     
@@ -58,19 +58,34 @@ class SQL extends Base {
         return $result;
     }
     /* ────────────────────────────────────────────────────────────────────────── */
+    
+    function save_result(mysqli_result $query) {
+        $result = [];
+        while ($row = $query->fetch_assoc()) {
+
+            # Save to array with key ID if it exists
+            if (!empty($row['id'])) {
+                $result[$row['id']] = $row;
+                continue;
+            }
+
+            # If not, just append it to the array
+            $result[] = $row;
+        }
+        return $result;
     }
     
     
     // ------------------------[ setupDB ]------------------------ //
     function setupDB($sqlcon, $templateArray) {
-    
+        
         /*
-    
+        
         $sqlcon example:
             $sqlcon = new mysqli('127.0.0.1', 'root', '');
-        
-        $templateArray example:
-    
+            
+            $templateArray example:
+            
             $sql_template["artister"] = [
                 "ALTER TABLE artister ADD `navn` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;",
                 "ALTER TABLE artister ADD `description` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;",
@@ -84,8 +99,13 @@ class SQL extends Base {
                 "ALTER TABLE brukere ADD PRIMARY KEY (`id`);",
                 "ALTER TABLE brukere MODIFY `id` int NOT NULL AUTO_INCREMENT;",
             ];
-    
-        */
-}
+            
+            */
+        }
+        
 
-?>
+
+
+
+    } # END CLASS
+        ?>

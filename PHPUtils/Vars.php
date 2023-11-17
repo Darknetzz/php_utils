@@ -9,6 +9,9 @@
 
 class Vars {
     
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                               var_assert                              */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function var_assert(mixed &$var, mixed $assertVal = false, bool $lazy = false) : bool {
         if (!isset($var)) {
             return false;
@@ -27,10 +30,12 @@ class Vars {
     }
 
 
-    
-    public function arrayInString($array, $string) {
-        foreach ($array as $char) {
-            if (strpos($char, $string) !== FALSE) {
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                             arrayInString                             */
+    /* ───────────────────────────────────────────────────────────────────── */
+    public function arrayInString(array $haystack, string $needle) {
+        foreach ($haystack as $char) {
+            if (strpos($char, $needle) !== FALSE) {
                 return true;
             }
         }
@@ -38,6 +43,9 @@ class Vars {
     }
 
 
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                               stringify                               */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function stringify(mixed $var) {
 
         $return = $var;
@@ -48,7 +56,40 @@ class Vars {
 
         }
 
-        return $var;
+        return $return;
+    }
+
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                              in_md_array                              */
+    /* ───────────────────────────────────────────────────────────────────── */
+    # NOTE: This function might be reesource expensive, but at least it works now.
+    public function in_md_array(array $haystack, string $needle) {
+
+        $contains = False;
+
+        # Callback function
+        $callBack = function($val, $key, $needle) use(&$contains) {
+
+            # We have already found what we are looking for
+            if ($contains === True) {
+                return $contains;
+            }
+
+            # Found it!
+            if ($key == $needle || $val == $needle) {
+                $contains = True;
+            }
+
+            return $contains;
+        };
+
+        array_walk_recursive($haystack, $callBack, $needle);
+
+        if ($contains !== False) {
+            return True;
+        }
+        return False;
     }
 
 }
