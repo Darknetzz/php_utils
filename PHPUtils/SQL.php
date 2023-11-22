@@ -14,7 +14,7 @@ class SQL extends Base {
     /* ────────────────────────────────────────────────────────────────────────── */
     /*                                 Connect DB                                 */
     /* ────────────────────────────────────────────────────────────────────────── */
-    function connectDB(string $host, string $user, string $pass, string $db) {
+    function connectDB(string $host, string $user, string $pass, string $db = null) {
         return new mysqli($host, $user, $pass, $db);
     }
     
