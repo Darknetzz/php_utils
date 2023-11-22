@@ -86,12 +86,16 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                           FILE_WRITE                                            #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
-    public function file_write(string $fullpath, string $content, bool $create = true) {    
+    public function file_write(string $fullpath, ?string $content, bool $create = true) {    
         if (!file_exists($fullpath) && $create === false) {
             return false;
         }
 
         if (!$this->file_write_access($fullpath)) {
+            return false;
+        }
+
+        if (empty($content)) {
             return false;
         }
 
