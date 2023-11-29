@@ -47,7 +47,7 @@ class SQL extends Base {
         $result = $query->get_result();
     
         if ($sqlcon->error) {
-            die("<div class='alert alert-danger'>Fatal error: $sqlcon->error</div>");
+            die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
         }
     
         // if ($result->num_rows < 1) {
