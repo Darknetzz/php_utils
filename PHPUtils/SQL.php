@@ -31,16 +31,9 @@ class SQL extends Base {
         $query = $sqlcon->prepare($statement);
     
         $paramsCount = count($params);
-        $paramscs = "No parameters";
         if ($paramsCount > 0) {
-            $types = '';
-            foreach ($params as $n => $val) { # &$val ?
-                $types .= 's';
-                # Hey, I know this looks kinda weird, BUT: 
-                # https://stackoverflow.com/questions/36777813/using-bind-param-with-arrays-and-loops
-            }
+            $types = str_repeat('s', $paramsCount);
             $query->bind_param($types, ...$params);
-            $paramscs = implode(", ", $params);
         }
     
         $query->execute();
