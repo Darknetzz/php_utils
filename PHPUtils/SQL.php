@@ -21,7 +21,7 @@ class SQL extends Base {
     /* ────────────────────────────────────────────────────────────────────────── */
     /*                 MAIN SQL QUERY WRAPPER [IMPORTANT FUNCTION]                */
     /* ────────────────────────────────────────────────────────────────────────── */
-    function executeQuery(string $statement, array $params = []) {
+    function executeQuery(string $statement, array $params = [], string $return = Null) {
         global $sqlcon;
     
         # allow for the statement to contain constants directly (probably not such a good idea)
@@ -38,15 +38,14 @@ class SQL extends Base {
     
         $query->execute();
         $result = $query->get_result();
+
+        if ($return == 'id') {
+            $result = $sqlcon->insert_id;
+        }
     
         if ($sqlcon->error) {
             die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
         }
-    
-        // if ($result->num_rows < 1) {
-        //     return $result; # we still want to return the object (even if it's empty)
-        //     # ok? so why do an if check then??
-        // }
     
         return $result;
     }
