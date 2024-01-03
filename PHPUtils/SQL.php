@@ -4,7 +4,12 @@
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
 class SQL extends Base {
     function __construct() {
-
+        # TODO: Create a __construct class with the following
+        # (just make sure you don't break anything somewhere else):
+            // $this->sqlcon = new mysqli($host, $user, $pass, $db);
+            // if ($this->sqlcon->connect_error) {
+            //     throw new Exception("Connection failed: " . $this->sqlcon->connect_error);
+            // }
     }
 
     function connectHost(string $host, string $user, string $pass) {
