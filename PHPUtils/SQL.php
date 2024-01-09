@@ -4,7 +4,12 @@
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
 class SQL extends Base {
     function __construct() {
-
+        # TODO: Create a __construct class with the following
+        # (just make sure you don't break anything somewhere else):
+            // $this->sqlcon = new mysqli($host, $user, $pass, $db);
+            // if ($this->sqlcon->connect_error) {
+            //     throw new Exception("Connection failed: " . $this->sqlcon->connect_error);
+            // }
     }
 
     function connectHost(string $host, string $user, string $pass) {
@@ -21,7 +26,7 @@ class SQL extends Base {
     /* ────────────────────────────────────────────────────────────────────────── */
     /*                 MAIN SQL QUERY WRAPPER [IMPORTANT FUNCTION]                */
     /* ────────────────────────────────────────────────────────────────────────── */
-    function executeQuery(string $statement, array $params = []) {
+    function executeQuery(string $statement, array $params = [], string $return = Null) {
         global $sqlcon;
     
         # allow for the statement to contain constants directly (probably not such a good idea)
@@ -31,29 +36,21 @@ class SQL extends Base {
         $query = $sqlcon->prepare($statement);
     
         $paramsCount = count($params);
-        $paramscs = "No parameters";
         if ($paramsCount > 0) {
-            $types = '';
-            foreach ($params as $n => $val) { # &$val ?
-                $types .= 's';
-                # Hey, I know this looks kinda weird, BUT: 
-                # https://stackoverflow.com/questions/36777813/using-bind-param-with-arrays-and-loops
-            }
+            $types = str_repeat('s', $paramsCount);
             $query->bind_param($types, ...$params);
-            $paramscs = implode(", ", $params);
         }
     
         $query->execute();
         $result = $query->get_result();
-    
-        if ($sqlcon->error) {
-            die("<div class='alert alert-danger'>Fatal error: $sqlcon->error</div>");
+
+        if ($return == 'id') {
+            $result = $sqlcon->insert_id;
         }
     
-        // if ($result->num_rows < 1) {
-        //     return $result; # we still want to return the object (even if it's empty)
-        //     # ok? so why do an if check then??
-        // }
+        if ($sqlcon->error) {
+            die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
+        }
     
         return $result;
     }
