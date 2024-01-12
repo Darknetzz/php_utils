@@ -48,7 +48,7 @@ class SQL extends Base {
             $result = $sqlcon->insert_id;
         }
     
-        if ($sqlcon->error) {
+        if (!empty($sqlcon->error)) {
             die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
         }
     
@@ -70,6 +70,14 @@ class SQL extends Base {
             $result[] = $row;
         }
         return $result;
+    }
+
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                                 Error                                 */
+    /* ───────────────────────────────────────────────────────────────────── */
+    function error() {
+        global $sqlcon;
+        return $sqlcon->error;
     }
     
     
