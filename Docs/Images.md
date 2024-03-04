@@ -1,7 +1,7 @@
 # Images
 Contains certain methods for manipulating images, such as blurring etc.
 
-## <font color="green">__construct</font>
+## __construct
 The contruct method checks for the presence of required PHP module `imagick`.
 ```php
 public function __construct() {
@@ -12,7 +12,7 @@ public function __construct() {
 }
 ```
 
-## <font color="green">blur</font>
+## blur
 ```php
 function blur(string $imagePath, float $radius = 10, float $sigma = 25, int $channel = imagick::CHANNEL_ALL)
 ```
