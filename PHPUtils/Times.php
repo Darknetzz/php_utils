@@ -5,7 +5,9 @@
 /* ────────────────────────────────────────────────────────────────────────── */
 
 class Times {
-    // --------[ getCurrentTime ]-------- //
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                            Get Current Time                           */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function getCurrentTime(string $format, string $timezone) : string {
         $dt = new DateTime('now');
         $tz = new DateTimeZone($timezone);
@@ -15,6 +17,9 @@ class Times {
         return $return;
     }
 
+    /* ───────────────────────────────────────────────────────────────────── */
+    /*                             Relative Time                             */
+    /* ───────────────────────────────────────────────────────────────────── */
     public function relativeTime($time, $format = null) {
         $then     = new DateTime('now');
         $now      = new DateTime($time);
