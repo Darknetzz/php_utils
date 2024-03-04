@@ -13,6 +13,7 @@ public function __construct() {
 ```
 
 ## blur
+Blurs an image, saving it in the same folder as the given `$imagePath`, with the prefix `blur_`.
 ```php
 function blur(string $imagePath, float $radius = 10, float $sigma = 25, int $channel = imagick::CHANNEL_ALL)
 ```
