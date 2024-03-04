@@ -16,20 +16,18 @@ class Images extends Base {
     /*                                 Blur image                                 */
     /* ────────────────────────────────────────────────────────────────────────── */
     function blur(string $imagePath, float $radius = 5, float $sigma = 3, int $channel = 0) {
-        header('Content-type: image/jpeg');
+        // header('Content-type: image/jpeg');
 
-        if (!is_file($imagePath)) {
-            die("Invalid image file: $imagePath");
+        try {
+            $image = new Imagick($imagePath);
+            $image->blurImage($radius, $sigma, $channel);
+            $image->writeImage($imagePath);
+            $image->clear();
+            $image->destroy();
+            return $image;
+        } catch (ImagickException $e) {
+            die("Error: " . $e->getMessage());
         }
-        
-        $image = new Imagick($imagePath);
-        
-        if (!$image->pingImage($imagePath)) {
-            die("Invalid image file: $imagePath");
-        }
-        
-        $image->blurImage(5,3);
-        echo $image;
     }
 }
 ?>
