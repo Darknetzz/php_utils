@@ -21,69 +21,22 @@ Disclaimer: This is so early in development it doesn't even have any useful stuf
 
 
 # Modules
+Here is a list of all the modules (classes) and their methods.
 
-## API
-
-## Auth
-
-## Calendar
-
-## Crypto
-
-## Debugger
-
-## Files
-
-## Funcs
-
-## Images
-Contains certain methods for manipulating images, such as blurring etc.
-
-## Navigation
-
-## Network
-The network class contains methods for IP address translations, determining if an IP address is local etc.
-
-### cidrToRange
-Translates a CIDR range to the range.
-```php
-function cidrToRange(string $cidr) : array
-```
-
-### ipInRange
-Determines if `$ip` is in the range between `$lowerip` and `$upperip`
-```php
-function ipInRange(string $ip, string $lowerip, string $upperip)
-```
-
-### getUserIP
-Attempts to get user's real IP.
-```php
-function getUserIP(string $reverse_proxy = null, bool $return_array = false, bool $die_if_empty = false)
-```
-
-### usesReverseProxy
-Attempts to determine if client is using reverse proxy.
-```php
-function usesReverseProxy(?string $proxy = null)
-```
-
-## Random
-
-### genStr
-Generates a string with the given `$charset`, with length `$len`
-```php
-function genStr(int $len = 24, mixed $charset = [], $required = [])
-```
-
-## Resources
-
-## Session
-
-## SQL
-
-## Strings
-
-## Times
-
-## Vars
+* [API](Docs/API.md)
+* [Auth](Docs/Auth.md)
+* [Calendar](Docs/Calendar.md)
+* [Crypto](Docs/Crypto.md)
+* [Debugger](Docs/Debugger.md)
+* [Files](Docs/Files.md)
+* [Funcs](Docs/Funcs.md)
+* [Images](Docs/Images.md)
+* [Navigation](Docs/Navigation.md)
+* [Network](Docs/Network.md)
+* [Random](Docs/Random.md)
+* [Resources](Docs/Resources.md)
+* [Session](Docs/Session.md)
+* [SQL](Docs/SQL.md)
+* [Strings](Docs/Strings.md)
+* [Times](Docs/Times.md)
+* [Vars](Docs/Vars.md)
