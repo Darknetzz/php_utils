@@ -1,36 +1,36 @@
 <?php
 
-# ──────────────────────────────────────────────────────────────────────────────────────────────── #
-#                                              RANDOM                                              #
-# ──────────────────────────────────────────────────────────────────────────────────────────────── #
+/**
+ * The Random class provides various randomization functions.
+ */
 class Random extends Base {
     
     /**
-     * array_pick_random
+     * Picks a random element from an array.
      *
-     * @param  mixed $array
-     * @return void
+     * @param  array $array The array to pick a random element from.
+     * @return mixed       The randomly picked element.
      */
     public function array_pick_random(array $array) {
-        $rand = mt_rand(0,count($array)-1);
-        $pick  = $array[$rand];
+        $rand = mt_rand(0, count($array) - 1);
+        $pick = $array[$rand];
         return $pick;
     }
 
     
     /**
-     * genStr
+     * Generates a random string.
      *
-     * @param  mixed $len
-     * @param  mixed $charset
-     * @param  mixed $required
-     * @return void
+     * @param  int    $len       The length of the generated string. Default is 24.
+     * @param  array  $charset   The character set to use for generating the string. Default is an empty array.
+     * @param  array  $required  The types of characters that must be included in the generated string. Default is an empty array.
+     * @return string            The generated random string.
      */
     public function genStr(int $len = 24, mixed $charset = [], $required = []) {
         
-        $str['lowercase'] = range('a','z');
+        $str['lowercase'] = range('a', 'z');
         $str['uppercase'] = range('A', 'Z');
-        $str['digits']    = range(0,9);
+        $str['digits']    = range(0, 9);
         $str['symbols']   = str_split("!.:,;-");
         $str['all']       = array_merge($str['lowercase'], $str['uppercase'], $str['digits'], $str['symbols']);
         $str['default']   = array_merge($str['lowercase'], $str['uppercase'], $str['digits']);
@@ -48,8 +48,8 @@ class Random extends Base {
         $count = count($charset);
         $returnValue = "";
         
-        for ($i=0; $i <= $len-1; $i++) {
-            $roll = mt_rand(0,$count-1);
+        for ($i = 0; $i <= $len - 1; $i++) {
+            $roll = mt_rand(0, $count - 1);
             $returnValue .= $charset[$roll];
         }
 
@@ -63,7 +63,7 @@ class Random extends Base {
         foreach ($requiredTypes as $type) {
 
             if (empty($str[$type])) {
-                die(__METHOD__.": Invalid type: $type");
+                die(__METHOD__ . ": Invalid type: $type");
             }
 
             if (in_array($type, $required) && strpos($returnValue, implode('', $str[$type])) !== False) {
@@ -78,11 +78,11 @@ class Random extends Base {
 
         
     /**
-     * roll
+     * Rolls a random number between the specified range.
      *
-     * @param  mixed $from
-     * @param  mixed $to
-     * @return void
+     * @param  int    $from  The minimum value of the range. Default is 1.
+     * @param  int    $to    The maximum value of the range. Default is 100.
+     * @return int           The randomly rolled number.
      */
     public function roll($from = 1, $to = 100) {
         return mt_rand($from, $to);
@@ -90,13 +90,13 @@ class Random extends Base {
     
         
     /**
-     * percentage
+     * Determines if a random event occurs based on a given chance.
      *
-     * @param  mixed $chance
-     * @return void
+     * @param  int     $chance  The chance of the event occurring, in percentage. Default is 50.
+     * @return bool             True if the event occurs, false otherwise.
      */
     public function percentage(int $chance = 50) {
-        return (mt_rand(0,100) <= $chance);
+        return (mt_rand(0, 100) <= $chance);
     }
 
 }

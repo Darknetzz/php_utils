@@ -2,6 +2,13 @@
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
 #                                                SQL                                               #
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
+/**
+ * Class SQL
+ * 
+ * A class to handle SQL connections and queries
+ * 
+ * @package PHPUtils
+ */
 class SQL extends Base {
     function __construct() {
         # TODO: Create a __construct class with the following
@@ -11,21 +18,52 @@ class SQL extends Base {
             //     throw new Exception("Connection failed: " . $this->sqlcon->connect_error);
             // }
     }
-
+    
+    /**
+     * connectHost
+     * 
+     * Connect to a host (without a database specified)
+     *
+     * @param  string $host The host to connect to
+     * @param  string $user The username to use
+     * @param  string $pass The password to use
+     * @return mysqli The mysqli object
+     */
     function connectHost(string $host, string $user, string $pass) {
         return new mysqli($host, $user, $pass);
     }
     
     /* ────────────────────────────────────────────────────────────────────────── */
     /*                                 Connect DB                                 */
-    /* ────────────────────────────────────────────────────────────────────────── */
+    /* ────────────────────────────────────────────────────────────────────────── */    
+    /**
+     * connectDB
+     * 
+     * Connect to a database
+     *
+     * @param  string $host The host to connect to
+     * @param  string $user The username to use
+     * @param  string $pass The password to use
+     * @param  string $db The database to connect to, defaults to null
+     * @return mysqli The mysqli object
+     */
     function connectDB(string $host, string $user, string $pass, string $db = null) {
         return new mysqli($host, $user, $pass, $db);
     }
     
     /* ────────────────────────────────────────────────────────────────────────── */
     /*                 MAIN SQL QUERY WRAPPER [IMPORTANT FUNCTION]                */
-    /* ────────────────────────────────────────────────────────────────────────── */
+    /* ────────────────────────────────────────────────────────────────────────── */    
+    /**
+     * executeQuery
+     * 
+     * Execute a query
+     *
+     * @param  string $statement The SQL statement to execute
+     * @param  array $params The parameters to bind to the statement
+     * @param  string $return The type of return to expect (id, array, object)
+     * @return void
+     */
     function executeQuery(string $statement, array $params = [], string $return = Null) {
         global $sqlcon;
     
@@ -55,7 +93,15 @@ class SQL extends Base {
         return $result;
     }
     /* ────────────────────────────────────────────────────────────────────────── */
-    
+        
+    /**
+     * save_result
+     * 
+     * Save the result of a query to an array
+     *
+     * @param  mysqli_result $query The query to save
+     * @return array The result of the query
+     */
     function save_result(mysqli_result $query) {
         $result = [];
         while ($row = $query->fetch_assoc()) {
@@ -74,7 +120,14 @@ class SQL extends Base {
 
     /* ───────────────────────────────────────────────────────────────────── */
     /*                                 Error                                 */
-    /* ───────────────────────────────────────────────────────────────────── */
+    /* ───────────────────────────────────────────────────────────────────── */    
+    /**
+     * error
+     * 
+     * Get the last error from the SQL connection
+     *
+     * @return string The last error from the SQL connection
+     */
     function error() {
         global $sqlcon;
         return $sqlcon->error;

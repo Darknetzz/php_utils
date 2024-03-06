@@ -1,25 +1,35 @@
 <?php
 
-/* ────────────────────────────────────────────────────────────────────────── */
-/*                                   IMAGES                                   */
-/* ────────────────────────────────────────────────────────────────────────── */
+/**
+ * Class Images
+ * 
+ * This class provides utility functions for working with images using the Imagick extension.
+ */
 class Images extends Base {
-    // Class implementation goes here
+    /**
+     * Images constructor.
+     * 
+     * Initializes the Images class and checks if the Imagick extension is enabled.
+     * If the extension is not enabled, it terminates the script execution.
+     */
     public function __construct() {
-        // Initialization code goes here
         if (!extension_loaded('imagick')) {
             die("Imagick extension is not enabled. To use the class `Images` you must have Imagick extension enabled.");
         }
     }
 
-    /* ────────────────────────────────────────────────────────────────────────── */
-    /*                                 Blur image                                 */
-    /* ────────────────────────────────────────────────────────────────────────── */
+    /**
+     * Blur an image.
+     * 
+     * @param string $imagePath The path to the image file.
+     * @param float $radius The blur radius.
+     * @param float $sigma The blur sigma.
+     * @param int $channel The channel(s) to apply the blur to.
+     * @return string The path of the blurred image.
+     * @throws ImagickException If an error occurs while blurring the image.
+     */
     function blur(string $imagePath, float $radius = 10, float $sigma = 25, int $channel = imagick::CHANNEL_ALL) {
-        // header('Content-type: image/jpeg');
-
         try {
-
             // Create a temporary file
             $tmpDir          = dirname($imagePath);
             $tmpFile         = "blurred_".basename($imagePath);
@@ -47,9 +57,18 @@ class Images extends Base {
         }
     }
 
-    /* ────────────────────────────────────────────────────────────────────────── */
-    /*                                 textToImage                                */
-    /* ────────────────────────────────────────────────────────────────────────── */
+    /**
+     * Add text to an image.
+     * 
+     * @param string $text The text to add to the image.
+     * @param string $imagePath The path to the image file.
+     * @param string $fontPath The path to the font file.
+     * @param int $fontSize The font size.
+     * @param int $x The x-coordinate of the text position.
+     * @param int $y The y-coordinate of the text position.
+     * @param string $color The color of the text.
+     * @throws ImagickException If an error occurs while adding the text to the image.
+     */
     function textToImage(string $text, string $imagePath, string $fontPath, int $fontSize, int $x, int $y, string $color = 'black') {
         $draw = new ImagickDraw();
         $draw->setFont($fontPath);

@@ -3,12 +3,28 @@
 /* ────────────────────────────────────────────────────────────────────────── */
 /*                                  Files                                     */
 /* ────────────────────────────────────────────────────────────────────────── */
+
+
+/**
+ * Class Files
+ *
+ * This class provides utility methods for working with files.
+ * 
+ * @package PHPUtils
+ */
 class Files extends Base {
 
-    // function __construct() {
-    //     $this->debug("Files included");
-    // }
-
+    /* ────────────────────────────────────────────────────────────────────────── */
+    /*                               include_folder                               */
+    /* ────────────────────────────────────────────────────────────────────────── */
+    /**
+     * include_folder
+     * 
+     * Include all files in a folder, except those in the $except array
+     * 
+     * @param  mixed $fullpath The full path to the folder
+     * @param  mixed $except An array of files to exclude
+     */
     public function include_folder(string $fullpath, array $except) {
         
         // if (!file_exists($fullpath)) {
@@ -20,6 +36,14 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                             IS_FILE                                             #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * is_file
+     * 
+     * Check if a file exists and is a file
+     * 
+     * @param  mixed $fullpath The full path to the file
+     * @return bool True if the file exists and is a file, false otherwise
+     */
     public function is_file(string $fullpath) {
         if (file_exists($fullpath) && is_file($fullpath)) {
             return true;
@@ -31,6 +55,15 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                           FILE_CLOSE                                            #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * file_close
+     * 
+     * Close a file handle
+     * 
+     * @param  mixed $handle The file handle to close
+     * @param  mixed $attempts The number of attempts to close the file handle
+     * @return bool True if the file handle was closed, false otherwise
+     */
     public function file_close(mixed $handle, int $attempts = 3) {
 
         if (!is_resource($handle)) {
@@ -53,6 +86,14 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                            FILE_READ                                            #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * file_read
+     * 
+     * Read a file
+     * 
+     * @param  mixed $fullpath The full path to the file
+     * @return string|null The contents of the file, or null if the file is empty
+     */
     public function file_read(string $fullpath) {
         if (!file_exists($fullpath) || !is_file($fullpath)) {
             $this->debugger->throw_exception(__METHOD__.": Attempted to read a file that does not exist: $fullpath");
@@ -72,6 +113,14 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                        FILE_WRITE_ACCESS                                        #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * file_write_access
+     * 
+     * Check if a file has write access
+     * 
+     * @param  mixed $fullpath The full path to the file
+     * @return bool True if the file has write access, false otherwise
+     */
     public function file_write_access(string $fullpath) {
         $f = fopen($fullpath, 'w+');
 
@@ -86,6 +135,16 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                           FILE_WRITE                                            #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * file_write
+     * 
+     * Write to a file
+     * 
+     * @param  mixed $fullpath The full path to the file
+     * @param  mixed $content The content to write to the file
+     * @param  mixed $create Whether to create the file if it does not exist. Defaults to true
+     * @return string|bool The content written to the file, or false if the file does not exist and $create is false
+     */
     public function file_write(string $fullpath, ?string $content, bool $create = true) {    
         if (!file_exists($fullpath) && $create === false) {
             return false;
@@ -110,6 +169,14 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                           FILE_DELETE                                           #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * file_delete
+     * 
+     * Delete a file
+     * 
+     * @param  mixed $fullpath The full path to the file
+     * @return bool True if the file was deleted, false otherwise
+     */
     public function file_delete(string $fullpath) {
         if (!file_exists($fullpath) || !is_file($fullpath)) {
             return true;
@@ -125,6 +192,14 @@ class Files extends Base {
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
     //                                          FILE_IS_EMPTY                                          #
     // ─────────────────────────────────────────────────────────────────────────────────────────────── #
+    /**
+     * file_is_empty
+     * 
+     * Check if a file is empty
+     * 
+     * @param  mixed $fullpath The full path to the file
+     * @return bool True if the file is empty, false otherwise
+     */
     public function file_is_empty(string $fullpath) {
         $contents = $this->file_read($fullpath);
 
@@ -138,6 +213,14 @@ class Files extends Base {
     /* ───────────────────────────────────────────────────────────────────── */
     /*                            currentFileName                            */
     /* ───────────────────────────────────────────────────────────────────── */
+    /**
+     * currentFileName
+     * 
+     * Get the current file name
+     * 
+     * @param  bool $ext Whether to include the file extension. Defaults to true
+     * @return string The current file name
+     */
     public function currentFileName(bool $ext = True) {
         # The whole point of this function is to not have to pass or know the current file name
         # __SCRIPT__           = resolves to Files.php
@@ -153,6 +236,16 @@ class Files extends Base {
     /* ───────────────────────────────────────────────────────────────────── */
     /*                             preventDirect                             */
     /* ───────────────────────────────────────────────────────────────────── */
+    /**
+     * preventDirect
+     * 
+     * Prevents direct invokation of a script - except $exceptions
+     * 
+     * @param  mixed $exceptions
+     * @param  mixed $pagevar
+     * @param  mixed $callback
+     * @return void
+     */
     # TODO: Fix this function at some point
     # Prevents direct invokation of a script - except $exceptions
     public function preventDirect(array $exceptions = [], mixed &$pagevar = null, ?callable $callback = null) {
