@@ -191,11 +191,11 @@ class SQL extends Base {
             foreach ($keywords as $keyword) {
                 foreach ($columns as $column) {
                     if ($casesensitive) {
-                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 1 ELSE 0 END)";
-                        $searchParams[] = "%".$keyword."%";
+                    $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
+                    $searchParams[] = "%".$keyword."%";
                     } else {
-                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 1 ELSE 0 END)";
-                        $searchParams[] = "%".strtolower($keyword)."%";
+                    $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 1 END)";
+                    $searchParams[] = "%".strtolower($keyword)."%";
                     }
                 }
             }
@@ -203,7 +203,7 @@ class SQL extends Base {
             $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions);
             $searchQuery .= " ORDER BY relevance DESC";
             if ($limit > 0) {
-                $searchQuery .= " LIMIT " . $limit;
+            $searchQuery .= " LIMIT " . $limit;
             }
             $searchResult = $sql->executeQuery($searchQuery, array_merge($searchParams, $searchParams));
             return $searchResult;
