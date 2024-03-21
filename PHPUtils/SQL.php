@@ -208,6 +208,50 @@ class SQL extends Base {
             $searchResult = $sql->executeQuery($searchQuery, array_merge($searchParams, $searchParams));
             return $searchResult;
         }
+
+        /**
+         * getUniqueRows
+         * 
+         * Get the unique rows from a table
+         * 
+         * @param  string $table The table to get the rows from
+         * @param  string $column The column that should be unique
+         * @return array The unique rows
+         */
+        function getUniqueRows(string $table, string $column) {
+            global $sql;
+            $getRows = $sql->executeQuery("SELECT DISTINCT $column FROM $table ORDER BY $column ASC");
+            $rows = [];
+            while ($row = $getRows->fetch_assoc()) {
+                if (!empty($row[$column])) {
+                    $rows[] = $row[$column];
+                }
+            }
+            return $rows;
+        }
+
+        /**
+         * countRows
+         * 
+         * Count the number of rows in a table
+         * 
+         * @param  string $table The table to count the rows in
+         * @param  string $column The column to filter by
+         * @param  string $value The value to filter by
+         * @return int The number of rows in the table
+         */
+        function countRows(string $table, string $column = null, string $value = null) {
+            global $sql;
+            $query = "SELECT COUNT(*) FROM $table";
+            if (!empty($column) && !empty($value)) {
+                $query .= " WHERE $column = ?";
+                $result = $sql->executeQuery($query, [$value]);
+            } else {
+                $result = $sql->executeQuery($query);
+            }
+            $count = $result->fetch_row()[0];
+            return $count;
+        }
         
 
 
