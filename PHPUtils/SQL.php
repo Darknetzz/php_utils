@@ -189,17 +189,15 @@ class SQL extends Base {
             $conditions = [];
             $searchParams = [];
             foreach ($keywords as $keyword) {
-            foreach ($columns as $column) {
-                if ($case_sensitive) {
-                $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 3 WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
-                $searchParams[] = "% ".$keyword." %";
-                $searchParams[] = "% ".$keyword."%";
-                } else {
-                $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 3 WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 1 END)";
-                $searchParams[] = "% ".strtolower($keyword)." %";
-                $searchParams[] = "% ".strtolower($keyword)."%";
+                foreach ($columns as $column) {
+                    if ($case_sensitive) {
+                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
+                        $searchParams[] = "%".$keyword."%";
+                    } else {
+                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 1 END)";
+                        $searchParams[] = "%".strtolower($keyword)."%";
+                    }
                 }
-            }
             }
             $searchQuery .= implode(" + ", $conditions) . ") AS relevance";
             $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions);
