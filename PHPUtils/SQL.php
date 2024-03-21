@@ -180,24 +180,26 @@ class SQL extends Base {
             global $sql;
 
             # Default options
-            $delimiter     = (empty($options["delimiter"]) ? " " : $options["delimiter"]);
-            $limit         = (empty($options['limit']) ? 0 : intval($options['limit']));
-            $casesensitive = (empty($options['casesensitive']) ? False : $options['casesensitive']);
+            $delimiter      = (empty($options["delimiter"]) ? " " : $options["delimiter"]);
+            $limit          = (empty($options['limit']) ? 0 : intval($options['limit']));
+            $case_sensitive = (empty($options['casesensitive']) ? False : $options['casesensitive']);
 
             $keywords = explode($delimiter, $search);
             $searchQuery = "SELECT *, (";
             $conditions = [];
             $searchParams = [];
             foreach ($keywords as $keyword) {
-                foreach ($columns as $column) {
-                    if ($casesensitive) {
-                    $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
-                    $searchParams[] = "%".$keyword."%";
-                    } else {
-                    $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 1 END)";
-                    $searchParams[] = "%".strtolower($keyword)."%";
-                    }
+            foreach ($columns as $column) {
+                if ($case_sensitive) {
+                $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 3 WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
+                $searchParams[] = "% ".$keyword." %";
+                $searchParams[] = "% ".$keyword."%";
+                } else {
+                $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 3 WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 1 END)";
+                $searchParams[] = "% ".strtolower($keyword)." %";
+                $searchParams[] = "% ".strtolower($keyword)."%";
                 }
+            }
             }
             $searchQuery .= implode(" + ", $conditions) . ") AS relevance";
             $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions);
