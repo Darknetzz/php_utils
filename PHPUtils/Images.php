@@ -83,5 +83,17 @@ class Images extends Base {
         $image->clear();
         $image->destroy();
     }
+
+    /**
+     * Render an image.
+     * 
+     * @param string $imagePath The path to the image file.
+     * @param int $height The height of the image.
+     * @param int $width The width of the image.
+     * @return string The HTML <img> snippet.
+     */
+    function renderImage(string $imagePath, int $height = 200, int $width = 200) {
+        return '<img src="'.$imagePath.' height="'.$height.'" width="'.$width.'">';
+    }
 }
 ?>
