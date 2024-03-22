@@ -184,6 +184,7 @@ class SQL extends Base {
             $limit          = (empty($options['limit']) ? 0 : intval($options['limit']));
             $case_sensitive = (empty($options['casesensitive']) ? False : $options['casesensitive']);
 
+            $search = preg_replace("/[^a-zA-Z0-9\s$delimiter]/", "", $search);
             $keywords = explode($delimiter, $search);
             $searchQuery = "SELECT *, (";
             $conditions = [];
@@ -191,22 +192,28 @@ class SQL extends Base {
             foreach ($keywords as $keyword) {
                 $keyword_nospace = str_replace([" ", "-", "_"], "", $keyword);
                 foreach ($columns as $column) {
-                    $conditions[] = "(CASE WHEN REPLACE(REPLACE(REPLACE(`$column`, ' ', ''), '-', ''), '_', '') LIKE ? THEN 2 ELSE 0 END)";
-                    $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 1 ELSE 0 END)";
                     if ($case_sensitive) {
-                        $searchParams[] = "%".$keyword_nospace."%";
+                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 3 ELSE 0 END)";
+                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 0 END)";
+                        $conditions[] = "(CASE WHEN REPLACE(REPLACE(REPLACE(`$column`, ' ', ''), '-', ''), '_', '') LIKE ? THEN 1 ELSE 0 END)";
+                        $searchParams[] = $keyword;
                         $searchParams[] = "%".$keyword."%";
+                        $searchParams[] = "%".$keyword_nospace."%";
                     } else {
-                        $searchParams[] = "%".strtolower($keyword_nospace)."%";
+                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 3 ELSE 0 END)";
+                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 0 END)";
+                        $conditions[] = "(CASE WHEN REPLACE(REPLACE(REPLACE(LOWER(`$column`), ' ', ''), '-', ''), '_', '') LIKE ? THEN 1 ELSE 0 END)";
+                        $searchParams[] = strtolower($keyword);
                         $searchParams[] = "%".strtolower($keyword)."%";
+                        $searchParams[] = "%".strtolower($keyword_nospace)."%";
                     }
                 }
             }
             $searchQuery .= implode(" + ", $conditions) . ") AS relevance";
-            $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions);
+            $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions) . " HAVING relevance > 0";
             $searchQuery .= " ORDER BY relevance DESC";
             if ($limit > 0) {
-            $searchQuery .= " LIMIT " . $limit;
+                $searchQuery .= " LIMIT " . $limit;
             }
             $searchResult = $sql->executeQuery($searchQuery, array_merge($searchParams, $searchParams));
             return $searchResult;
