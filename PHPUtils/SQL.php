@@ -173,6 +173,7 @@ class SQL extends Base {
          *                       - delimiter: The string to split the search string by
          *                       - limit: The maximum number of results to return (default 0 = no limit)
          *                       - casesensitive: Whether the search should be case sensitive (default False)
+         *                       - strip_chars: Whether to strip special characters from the search string (default True)
          * 
          * @return mysqli_result The result of the search
          */
@@ -183,8 +184,9 @@ class SQL extends Base {
             $delimiter      = (empty($options["delimiter"]) ? " " : $options["delimiter"]);
             $limit          = (empty($options['limit']) ? 0 : intval($options['limit']));
             $case_sensitive = (empty($options['casesensitive']) ? False : $options['casesensitive']);
+            $strip_chars    = (empty($options['strip_chars']) ? True : $options['strip_chars']);
 
-            $search = preg_replace("/[^a-zA-Z0-9\s$delimiter]/", "", $search);
+            $search = ($strip_chars ? preg_replace("/[^a-zA-Z0-9\s$delimiter]/", "", $search) : $search);
             $keywords = explode($delimiter, $search);
             $searchQuery = "SELECT *, (";
             $conditions = [];
