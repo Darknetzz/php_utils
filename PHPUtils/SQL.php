@@ -189,12 +189,15 @@ class SQL extends Base {
             $conditions = [];
             $searchParams = [];
             foreach ($keywords as $keyword) {
+                $keyword_nospace = str_replace([" ", "-", "_"], "", $keyword);
                 foreach ($columns as $column) {
+                    $conditions[] = "(CASE WHEN REPLACE(REPLACE(REPLACE(`$column`, ' ', ''), '-', ''), '_', '') LIKE ? THEN 3 ELSE 1 END)";
+                    $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
                     if ($case_sensitive) {
-                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 1 END)";
+                        $searchParams[] = "%".$keyword_nospace."%";
                         $searchParams[] = "%".$keyword."%";
                     } else {
-                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 1 END)";
+                        $searchParams[] = "%".strtolower($keyword_nospace)."%";
                         $searchParams[] = "%".strtolower($keyword)."%";
                     }
                 }
