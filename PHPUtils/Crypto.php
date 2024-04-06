@@ -62,6 +62,21 @@ class Crypto extends Base {
     function hash(string $str, string $hash = 'sha512') {
         return hash($str, $hash);
     }
+
+    /**
+     * verifyhash
+     * 
+     * Verifies a hash
+     * 
+     * @param  mixed $str The string to verify
+     * @param  mixed $hash The hash to verify against
+     * @param  mixed $hashmethod The hash method to use. Defaults to sha512
+     * 
+     * @return bool Whether the hash is valid or not
+     */
+    function verifyhash(string $str, string $hash, string $hashmethod = 'sha512') {
+        return hash($hashmethod, $str) == $hash;
+    }
 }
 
 ?>
