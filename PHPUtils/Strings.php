@@ -4,13 +4,18 @@
 /*                                 Strings                                    */
 /* ────────────────────────────────────────────────────────────────────────── */
 
+/**
+ * Class Strings
+ * 
+ * A class to handle string manipulation
+ */
 class Strings extends Base {
     /**
     * slugify
     *
-    * @param  mixed $string
-    * @param  mixed $replace
-    * @param  mixed $lenCap
+    * @param  string $string The string to slugify.
+    * @param  string $replace The character to replace spaces with. Default is '_'.
+    * @param  int $lenCap The maximum length of the slug. Default is 0.
     * @return void
     */
     function slugify(string $string, string $replace = '_', int $lenCap = 0) {
@@ -34,8 +39,8 @@ class Strings extends Base {
     /**
     * hide
     *
-    * @param  mixed $string
-    * @param  mixed $visible
+    * @param  string $string The string to hide.
+    * @param  int $visible The number of characters to keep visible. Default is 3.
     * @return void
     */
     function hide(string $string, int $visibility = 3) {
@@ -53,10 +58,12 @@ class Strings extends Base {
     
     /**
      * cap
-     *
-     * @param  mixed $string
-     * @param  mixed $maxlen
-     * @return void
+     * 
+     * Cap a string to a certain length
+     * 
+     * @param  string $string The string to cap
+     * @param  int $maxlen The maximum length of the string. Default is 30.
+     * @return string The capped string
      */
     function cap(string $string, int $maxlen = 30) {
         if (strlen($string) > $maxlen) {

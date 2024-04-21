@@ -16,6 +16,13 @@ $debugger->debug_print($debug_messages, "Debug log");
 
 */
 
+/**
+ * Debugger
+ * 
+ * A class to handle debugging and logging
+ * 
+ * @package PHPUtils
+ */
 class Debugger {
 
     public bool $verbose;

@@ -4,10 +4,20 @@
 /*                                  TimeUtil                                  */
 /* ────────────────────────────────────────────────────────────────────────── */
 
+/**
+ * Class Times
+ */
 class Times {
     /* ───────────────────────────────────────────────────────────────────── */
     /*                            Get Current Time                           */
-    /* ───────────────────────────────────────────────────────────────────── */
+    /* ───────────────────────────────────────────────────────────────────── */    
+    /**
+     * getCurrentTime
+     *
+     * @param  string $format The format to return the time in
+     * @param  string $timezone The timezone to return the time in
+     * @return string The current time
+     */
     public function getCurrentTime(string $format, string $timezone) : string {
         $dt = new DateTime('now');
         $tz = new DateTimeZone($timezone);
@@ -19,7 +29,14 @@ class Times {
 
     /* ───────────────────────────────────────────────────────────────────── */
     /*                             Relative Time                             */
-    /* ───────────────────────────────────────────────────────────────────── */
+    /* ───────────────────────────────────────────────────────────────────── */    
+    /**
+     * relativeTime
+     *
+     * @param  mixed $time The time to compare
+     * @param  mixed $format The format to return the time in. Defaults to null
+     * @return string The relative time
+     */
     public function relativeTime($time, $format = null) {
         $then     = new DateTime('now');
         $now      = new DateTime($time);
