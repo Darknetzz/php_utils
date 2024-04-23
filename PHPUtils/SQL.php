@@ -64,7 +64,7 @@ class SQL extends Base {
      * @param  string $return The type of return to expect (id, array, object)
      * @return void
      */
-    function executeQuery(string $statement, array $params = [], string $return = Null) {
+    function executeQuery(string $statement, array $params = [], string $return = "result") {
         global $sqlcon;
     
         # allow for the statement to contain constants directly (probably not such a good idea)
@@ -90,7 +90,10 @@ class SQL extends Base {
             die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
         }
     
-        return $result;
+        if ($return == 'result') {
+            return $result;
+        }
+        die("Invalid return type specified for `executeQuery`. Valid options are `result` or `id`.");
     }
     /* ────────────────────────────────────────────────────────────────────────── */
         
