@@ -204,7 +204,7 @@ class SQL extends Base {
                         $conditions[] = "(CASE WHEN REGEXP_REPLACE(`$column`, '[^a-zA-Z0-9]', '') LIKE ? THEN 2 ELSE 0 END)";
                         $searchParams[] = "%".$keyword."%";
                     } else {
-                        $conditions[] = "(CASE WHEN LOWER(REGEXP_REPLACE(`$column`, '[^a-zA-Z0-9]', '')) LIKE ? THEN 1 ELSE 0 END)";
+                        $conditions[] = "(CASE WHEN LOWER(REGEXP_REPLACE(`$column`, '[^a-zA-Z0-9]', '')) LIKE LOWER(?) THEN 1 ELSE 0 END)";
                         $searchParams[] = "%".strtolower($keyword)."%";
                     }
                 }
