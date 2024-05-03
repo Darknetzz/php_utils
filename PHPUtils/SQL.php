@@ -62,7 +62,7 @@ class SQL extends Base {
      * @param  string $statement The SQL statement to execute
      * @param  array $params The parameters to bind to the statement
      * @param  string $return The type of return to expect (id, array, object)
-     * @return void
+     * @return mixed
      */
     function executeQuery(string $statement, array $params = [], string $return = "result") {
         global $sqlcon;
@@ -87,13 +87,15 @@ class SQL extends Base {
         }
     
         if (!empty($sqlcon->error)) {
-            die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
+            echo "<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>";
+            die();
         }
     
         if ($return == 'result') {
             return $result;
         }
-        die("Invalid return type specified for `executeQuery`. Valid options are `result` or `id`.");
+        echo "Invalid return type specified for `executeQuery`. Valid options are `result` or `id`.";
+        return False;
     }
     /* ────────────────────────────────────────────────────────────────────────── */
         
