@@ -192,6 +192,7 @@ class SQL extends Base {
             $case_sensitive = (empty($options['casesensitive']) ? False : $options['casesensitive']);
             $strip_chars    = (empty($options['strip_chars']) ? True : $options['strip_chars']);
             $search_min_len = (empty($options['search_min_len']) ? 0 : $options['search_min_len']);
+            $offset         = (empty($options['offset']) ? 0 : $options['offset']);
 
             $keywords = explode($delimiter, $search);
             $searchQuery = "SELECT *, (";
@@ -215,7 +216,11 @@ class SQL extends Base {
             $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions) . " HAVING relevance > 1";
             $searchQuery .= " ORDER BY relevance DESC";
             if ($limit > 0) {
-                $searchQuery .= " LIMIT " . $limit;
+                if ($offset > 0) {
+                    $searchQuery .= " LIMIT " . $offset . ", " . $limit;
+                } else {
+                    $searchQuery .= " LIMIT " . $limit;
+                }
             }
             $searchResult = $sql->executeQuery($searchQuery, array_merge($searchParams, $searchParams));
             return $searchResult;
