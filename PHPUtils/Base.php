@@ -19,6 +19,9 @@ class Base {
 
 
     function __construct() {
+        
+        require_once('Debugger.php');
+        require_once('Vars.php');
 
         if (empty($this->debugger)) {
             $this->debugger = new Debugger($this->verbose);
