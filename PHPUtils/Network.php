@@ -28,7 +28,12 @@ class Network extends Base {
     $lower_long = ip2long($lowerip);
     $upper_long = ip2long($upperip);
 
-    if ($lower_long <= $ip && $ip >= $upper_long) {
+    if (!$ip || !$lower_long || !$upper_long) {
+      echo "ERROR: Function ipInRange requires valid IP addresses. Please check your input.";
+      return null;
+    }
+
+    if ($lower_long <= $ip && $ip <= $upper_long) {
       return true;
     }
     return false;
@@ -64,6 +69,33 @@ class Network extends Base {
       return ["type" => $type, "userip" => $userip];
     }
     return $userip;
+  }
+
+  /**
+   * Get the server's IP address.
+   *
+   * @param  bool $return_array Whether to return the result as an array or not.
+   * @param  bool $die_if_empty Whether to die if the server's IP cannot be determined.
+   * @return string|array|null The server's IP address or an array with 'type' and 'serverip' keys if $return_array is true. Returns null if $die_if_empty is false and the server's IP cannot be determined.
+   */
+  function getServerIP(
+    bool $return_array = false,
+    bool $die_if_empty = false
+  ) {
+    $serverip = (!empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null);
+
+    if (empty($serverip) && $die_if_empty !== false) {
+      die("getServerIP: Unable to get IP from server.");
+    }
+
+    if (empty($serverip) && $die_if_empty === false) {
+      return null;
+    }
+
+    if ($return_array !== false) {
+      return ["type" => "server", "serverip" => $serverip];
+    }
+    return $serverip;
   }
 
   /**

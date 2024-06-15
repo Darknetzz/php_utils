@@ -62,9 +62,9 @@ class SQL extends Base {
      * @param  string $statement The SQL statement to execute
      * @param  array $params The parameters to bind to the statement
      * @param  string $return The type of return to expect (id, array, object)
-     * @return void
+     * @return mixed
      */
-    function executeQuery(string $statement, array $params = [], string $return = Null) {
+    function executeQuery(string $statement, array $params = [], string $return = "result") {
         global $sqlcon;
     
         # allow for the statement to contain constants directly (probably not such a good idea)
@@ -87,10 +87,15 @@ class SQL extends Base {
         }
     
         if (!empty($sqlcon->error)) {
-            die("<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>");
+            echo "<div class='alert alert-danger'>executeQuery() - Fatal error: $sqlcon->error</div>";
+            die();
         }
     
-        return $result;
+        if ($return == 'result') {
+            return $result;
+        }
+        echo "Invalid return type specified for `executeQuery`. Valid options are `result` or `id`.";
+        return False;
     }
     /* ────────────────────────────────────────────────────────────────────────── */
         
@@ -170,10 +175,11 @@ class SQL extends Base {
          * @param  string $search The string to search for
          * @param  array $columns The columns to search in
          * @param  array $options The options for the search
-         *                       - delimiter: The string to split the search string by
-         *                       - limit: The maximum number of results to return (default 0 = no limit)
-         *                       - casesensitive: Whether the search should be case sensitive (default False)
-         *                       - strip_chars: Whether to strip special characters from the search string (default True)
+         *                      - delimiter: The string to split the search string by
+         *                      - limit: The maximum number of results to return (default 0 = no limit)
+         *                      - casesensitive: Whether the search should be case sensitive (default False)
+         *                      - strip_chars: Whether to strip special characters from the search string (default True)
+         *                      - search_min_len: The minimum length of the search string (default 0 - no minimum length)
          * 
          * @return mysqli_result The result of the search
          */
@@ -185,37 +191,36 @@ class SQL extends Base {
             $limit          = (empty($options['limit']) ? 0 : intval($options['limit']));
             $case_sensitive = (empty($options['casesensitive']) ? False : $options['casesensitive']);
             $strip_chars    = (empty($options['strip_chars']) ? True : $options['strip_chars']);
+            $search_min_len = (empty($options['search_min_len']) ? 0 : $options['search_min_len']);
+            $offset         = (empty($options['offset']) ? 0 : $options['offset']);
 
-            $search = ($strip_chars ? preg_replace("/[^a-zA-Z0-9\s$delimiter]/", "", $search) : $search);
             $keywords = explode($delimiter, $search);
             $searchQuery = "SELECT *, (";
             $conditions = [];
             $searchParams = [];
             foreach ($keywords as $keyword) {
-                $keyword_nospace = str_replace([" ", "-", "_"], "", $keyword);
+                if ($strip_chars === True) {
+                    $keyword = preg_replace("/[^a-zA-Z0-9]/", "", $keyword);
+                }
                 foreach ($columns as $column) {
-                    if ($case_sensitive) {
-                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 3 ELSE 0 END)";
-                        $conditions[] = "(CASE WHEN `$column` LIKE ? THEN 2 ELSE 0 END)";
-                        $conditions[] = "(CASE WHEN REPLACE(REPLACE(REPLACE(`$column`, ' ', ''), '-', ''), '_', '') LIKE ? THEN 1 ELSE 0 END)";
-                        $searchParams[] = $keyword;
+                    if ($case_sensitive === True) {
+                        $conditions[] = "(CASE WHEN REGEXP_REPLACE(`$column`, '[^a-zA-Z0-9]', '') LIKE ? THEN 2 ELSE 0 END)";
                         $searchParams[] = "%".$keyword."%";
-                        $searchParams[] = "%".$keyword_nospace."%";
                     } else {
-                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 3 ELSE 0 END)";
-                        $conditions[] = "(CASE WHEN LOWER(`$column`) LIKE ? THEN 2 ELSE 0 END)";
-                        $conditions[] = "(CASE WHEN REPLACE(REPLACE(REPLACE(LOWER(`$column`), ' ', ''), '-', ''), '_', '') LIKE ? THEN 1 ELSE 0 END)";
-                        $searchParams[] = strtolower($keyword);
+                        $conditions[] = "(CASE WHEN LOWER(REGEXP_REPLACE(`$column`, '[^a-zA-Z0-9]', '')) LIKE LOWER(?) THEN 1 ELSE 0 END)";
                         $searchParams[] = "%".strtolower($keyword)."%";
-                        $searchParams[] = "%".strtolower($keyword_nospace)."%";
                     }
                 }
             }
             $searchQuery .= implode(" + ", $conditions) . ") AS relevance";
-            $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions) . " HAVING relevance > 0";
+            $searchQuery .= " FROM $tablename WHERE " . implode(" OR ", $conditions) . " HAVING relevance > 1";
             $searchQuery .= " ORDER BY relevance DESC";
             if ($limit > 0) {
-                $searchQuery .= " LIMIT " . $limit;
+                if ($offset > 0) {
+                    $searchQuery .= " LIMIT " . $offset . ", " . $limit;
+                } else {
+                    $searchQuery .= " LIMIT " . $limit;
+                }
             }
             $searchResult = $sql->executeQuery($searchQuery, array_merge($searchParams, $searchParams));
             return $searchResult;
