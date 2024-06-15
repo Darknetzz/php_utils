@@ -28,7 +28,12 @@ class Network extends Base {
     $lower_long = ip2long($lowerip);
     $upper_long = ip2long($upperip);
 
-    if ($lower_long <= $ip && $ip >= $upper_long) {
+    if (!$ip || !$lower_long || !$upper_long) {
+      echo "ERROR: Function ipInRange requires valid IP addresses. Please check your input.";
+      return null;
+    }
+
+    if ($lower_long <= $ip && $ip <= $upper_long) {
       return true;
     }
     return false;
