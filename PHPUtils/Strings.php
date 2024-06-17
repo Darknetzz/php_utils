@@ -25,8 +25,10 @@ class Strings extends Base {
         ];
         
         $final_string = trim(strtolower($string));
-        $final_string = str_replace($search, $replace,  $final_string);
+        $final_string = str_replace($search, "_",  $final_string);
         $final_string = preg_replace('/[^A-Za-z0-9\_]/', '',   $final_string);
+        $final_string = preg_replace('/_+/', '_', $final_string);
+        $final_string = str_replace('_', $replace, $final_string);
         
         if (strlen($final_string) > $lenCap && $lenCap != 0) {
             $final_string = substr($final_string, 0, ($lenCap - 1));
