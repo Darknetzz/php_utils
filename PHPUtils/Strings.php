@@ -73,6 +73,43 @@ class Strings extends Base {
         }
         return $string;
     }
+
+    /**
+     * appendGetParamsToUrl
+     * 
+     * Append GET parameters to a URL (written by Co-Pilot)
+     * 
+     * @param  string $url The URL to append the parameters to
+     * @param  array $params The parameters to append
+     * @return string The new URL
+     */
+    function appendGetParamsToUrl(string $url, array $params = []) {
+        // Parse the URL into its components
+        $urlComponents = parse_url($url);
+
+        // If the URL already has a query string, parse it into an array
+        $existingParams = [];
+        if (isset($urlComponents['query'])) {
+            parse_str($urlComponents['query'], $existingParams);
+        }
+
+        // Merge the existing parameters with the new ones
+        $mergedParams = array_merge($existingParams, $params);
+
+        // Build the new query string
+        $newQueryString = http_build_query($mergedParams);
+
+        // Rebuild the URL
+        $newUrl = (isset($urlComponents['scheme']) ? $urlComponents['scheme'] . '://' : '')
+            . (isset($urlComponents['user']) ? $urlComponents['user'] . (isset($urlComponents['pass']) ? ':' . $urlComponents['pass'] : '') . '@' : '')
+            . (isset($urlComponents['host']) ? $urlComponents['host'] : '')
+            . (isset($urlComponents['port']) ? ':' . $urlComponents['port'] : '')
+            . (isset($urlComponents['path']) ? $urlComponents['path'] : '')
+            . ($newQueryString ? '?' . $newQueryString : '')
+            . (isset($urlComponents['fragment']) ? '#' . $urlComponents['fragment'] : '');
+
+        return $newUrl;
+    }
 }
 
 ?>
