@@ -5,13 +5,17 @@
 /* ────────────────────────────────────────────────────────────────────────── */
 
 
-/**
- * Class Files
- *
- * This class provides utility methods for working with files.
- * 
- * @package PHPUtils
- */
+ /**
+  * Files
+  *
+  * @author Darknetzz
+  * @package PHPUtils
+  * @version 1.0.0
+  * @since 1.0.0
+  * @license MIT
+  *
+  * This class provides utility methods for working with files.
+  */
 class Files extends Base {
 
     /* ────────────────────────────────────────────────────────────────────────── */

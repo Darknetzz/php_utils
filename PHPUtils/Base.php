@@ -3,6 +3,17 @@
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
 #                                               BASE                                               #
 # ──────────────────────────────────────────────────────────────────────────────────────────────── #
+/**
+    * Base
+    *
+    * @package PHPUtils
+    * @author Darknetzz
+    * @version 1.0.0
+    * @since 1.0.0
+    * @license MIT
+    *
+    * A base class to handle common functionalities
+    */
 class Base {
 
     public $name = "PHPUtils";

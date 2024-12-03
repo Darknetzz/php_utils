@@ -1,11 +1,15 @@
 <?php
 
 /**
- * Class Funcs
- * 
- * The Funcs class extends the Base class and provides additional utility functions.
- * 
+ * Funcs
+ *
+ * @author Darknetzz
  * @package PHPUtils
+ * @version 1.0.0
+ * @since 1.0.0
+ * @license MIT
+ * 
+ * A class to handle functions
  */
 class Funcs extends Base {
     /**

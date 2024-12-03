@@ -3,25 +3,22 @@
 /* ────────────────────────────────────────────────────────────────────────── */
 /*                                  Debugger                                  */
 /* ────────────────────────────────────────────────────────────────────────── */
-/*
-
-Usage example:
-
-$debug_messages = [];
-
-$debugger = new Debugger;
-$debugger->debug_log($debug_messages, "This is a debug message", "Title");
-$debugger->debug_log($debug_messages, "This is another debug message");
-$debugger->debug_print($debug_messages, "Debug log");
-
-*/
 
 /**
  * Debugger
  * 
- * A class to handle debugging and logging
- * 
  * @package PHPUtils
+ * @version 1.0.0
+ * @since 1.0.0
+ * @license MIT
+ *
+ * A class to handle debugging
+ *
+ * @example "$debug_messages = [];" Create an empty array to store debug messages
+ * @example "$debugger = new Debugger;" Instantiate the debugger
+ * @example "$debugger->debug_log($debug_messages, "This is a debug message", "Title");" Log a debug message
+ * @example "$debugger->debug_log($debug_messages, "This is another debug message");" Log another debug message
+ * @example "$debugger->debug_print($debug_messages, "Debug log");" Print the debug log
  */
 class Debugger {
 

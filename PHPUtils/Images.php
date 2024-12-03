@@ -1,9 +1,21 @@
 <?php
 
 /**
- * Class Images
+ * Images
  * 
  * This class provides utility functions for working with images using the Imagick extension.
+ * 
+ * @package PHPUtils
+ * @author Darknetzz
+ * @version 1.0.0
+ * @since 1.0.0
+ * @license MIT
+ * 
+ * @example
+ * $image = new Images();
+ * $image->resize('/path/to/image.jpg', 200, 200);
+ * 
+ * @see https://www.php.net/manual/en/book.imagick.php
  */
 class Images extends Base {
     /**
