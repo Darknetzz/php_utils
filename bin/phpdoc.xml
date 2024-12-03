@@ -3,7 +3,7 @@
 
     <title>php-utils</title>
 
-    <setting name="template.color" value="purple"/>
+    <setting name="template.color" value="deep-purple"/>
 
     <paths>
         <output>/var/www/html/_assets/php-utils/Docs</output>

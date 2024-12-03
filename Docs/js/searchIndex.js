@@ -3,17 +3,17 @@ Search.appendIndex(
                 {
             "fqsen": "\\API",
             "name": "API",
-            "summary": "",
+            "summary": "API",
             "url": "classes/API.html"
         },                {
             "fqsen": "\\Auth",
             "name": "Auth",
-            "summary": "",
+            "summary": "Auth",
             "url": "classes/Auth.html"
         },                {
             "fqsen": "\\Base",
             "name": "Base",
-            "summary": "",
+            "summary": "Base",
             "url": "classes/Base.html"
         },                {
             "fqsen": "\\Base\u003A\u003A__construct\u0028\u0029",
@@ -63,7 +63,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Calendar",
             "name": "Calendar",
-            "summary": "",
+            "summary": "Calendar",
             "url": "classes/Calendar.html"
         },                {
             "fqsen": "\\Crypto",
@@ -143,7 +143,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Files",
             "name": "Files",
-            "summary": "Class\u0020Files",
+            "summary": "Files",
             "url": "classes/Files.html"
         },                {
             "fqsen": "\\Files\u003A\u003Ainclude_folder\u0028\u0029",
@@ -198,7 +198,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Funcs",
             "name": "Funcs",
-            "summary": "Class\u0020Funcs",
+            "summary": "Funcs",
             "url": "classes/Funcs.html"
         },                {
             "fqsen": "\\Funcs\u003A\u003AcountFunctionParams\u0028\u0029",
@@ -208,7 +208,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Images",
             "name": "Images",
-            "summary": "Class\u0020Images",
+            "summary": "Images",
             "url": "classes/Images.html"
         },                {
             "fqsen": "\\Images\u003A\u003A__construct\u0028\u0029",
@@ -233,12 +233,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Navigation",
             "name": "Navigation",
-            "summary": "",
+            "summary": "Navigation",
             "url": "classes/Navigation.html"
         },                {
             "fqsen": "\\Network",
             "name": "Network",
-            "summary": "",
+            "summary": "Base",
             "url": "classes/Network.html"
         },                {
             "fqsen": "\\Network\u003A\u003AcidrToRange\u0028\u0029",
@@ -308,7 +308,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Session",
             "name": "Session",
-            "summary": "",
+            "summary": "Base",
             "url": "classes/Session.html"
         },                {
             "fqsen": "\\SQL",
